@@ -4,8 +4,6 @@ Authors: Jacob Barsheff, Wyatt Miller, and Richie Tarkowski
 
 Date Created: 8/30/2018
 
-Last Modified:
-
 Course: CIT 255
 
 Overview:
