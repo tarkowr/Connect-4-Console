@@ -67,8 +67,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public Gameboard()
         {
             _positionState = new PlayerPiece[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
-
-            InitializeGameboard();
         }
 
         #endregion
