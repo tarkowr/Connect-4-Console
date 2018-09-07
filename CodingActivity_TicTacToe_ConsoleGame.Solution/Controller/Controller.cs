@@ -80,10 +80,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             _gameView.DisplayWelcomeScreen();
 
+            //
+            // game loop happens
+            //
             while (_playingGame)
             {
                 //
-                // Round loop
+                // Round loop happens
                 //
                 while (_playingRound)
                 {
@@ -112,7 +115,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     // Prompt user to play another round
                     //
-                    if (_gameView.DisplayNewRoundPrompt())
+                    if (_gameView.DisplayNewRoundPrompt() == true)
                     {
                         _gameboard.InitializeGameboard();
                         _gameView.InitializeView();
@@ -128,7 +131,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 }
             }
 
-            _gameView.DisplayClosingScreen();
+            _gameView.DisplayExitPrompt();
         }
 
         /// <summary>
