@@ -81,7 +81,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.BackgroundColor = ConsoleConfig.bodyBackgroundColor;
             Console.ForegroundColor = ConsoleConfig.bodyBackgroundColor;
 
-            ConsoleUtil.WindowTitle = "The Tic-tac-toe Game";
+            ConsoleUtil.WindowTitle = "Connect Four";
         }
 
         /// <summary>
@@ -111,11 +111,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.CursorVisible = false;
 
             Console.WriteLine();
-            ConsoleUtil.DisplayMessage("Thank you for play the game. Press any key to Exit.");
+            ConsoleUtil.DisplayMessage("Thank you for playing the Connect Four game! Press any key to EXIT.");
 
             Console.ReadKey();
 
-            System.Environment.Exit(1);
+            System.Environment.Exit(0);
         }
 
         /// <summary>
@@ -176,11 +176,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
+            ConsoleUtil.HeaderText = "Connect Four";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Written by John Velis");
-            ConsoleUtil.DisplayMessage("Northwestern Michigan College");
+            ConsoleUtil.DisplayMessage("Written by Jacob Barsheff, Wyatt Miller, and Richie Tarkowski");
+            ConsoleUtil.DisplayMessage("Northwestern Michigan College CIT 255");
             Console.WriteLine();
 
             sb.Clear();
@@ -193,19 +193,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             sb.Clear();
             sb.AppendFormat("Your first task will be to set up your account details.");
             ConsoleUtil.DisplayMessage(sb.ToString());
-
-            DisplayContinuePrompt();
-        }
-
-        /// <summary>
-        /// display a closing screen when the user quits the application
-        /// </summary>
-        public void DisplayClosingScreen()
-        {
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
-            ConsoleUtil.DisplayReset();
-
-            ConsoleUtil.DisplayMessage("Thank you for using The Tic-tac-toe Game.");
 
             DisplayContinuePrompt();
         }
