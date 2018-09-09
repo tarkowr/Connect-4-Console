@@ -350,7 +350,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns>bool where true = yes</returns>
         private bool DisplayGetYesNoPrompt(string promptMessage)
         {
-            bool yesNoChoice = false;
+            bool yesNoChoice = true;
             bool validResponse = false;
             string userResponse;
 
