@@ -34,7 +34,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
-        private const int MAX_NUM_OF_ROWS_COLUMNS = 3;
+        private const int MAX_NUM_OF_ROWS = 6;
+
+        private const int MAX_NUM_OF_COLUMNS = 7;
+
 
         private PlayerPiece[,] _positionState;
 
@@ -44,9 +47,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region PROPERTIES
 
-        public int MaxNumOfRowsColumns
+        public int MaxNumOfRows
         {
-            get { return MAX_NUM_OF_ROWS_COLUMNS; }
+            get { return MAX_NUM_OF_ROWS; }
+        }
+
+        public int MaxNumOfColumns
+        {
+            get { return MAX_NUM_OF_COLUMNS; }
         }
 
         public PlayerPiece[,] PositionState
@@ -66,7 +74,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public Gameboard()
         {
-            _positionState = new PlayerPiece[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
+            _positionState = new PlayerPiece[MAX_NUM_OF_ROWS, MAX_NUM_OF_COLUMNS];
         }
 
         #endregion
@@ -83,9 +91,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // Set all PlayerPiece array values to "None"
             //
-            for (int row = 0; row < MAX_NUM_OF_ROWS_COLUMNS; row++)
+            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
             {
-                for (int column = 0; column < MAX_NUM_OF_ROWS_COLUMNS; column++)
+                for (int column = 0; column < MAX_NUM_OF_COLUMNS; column++)
                 {
                     _positionState[row, column] = PlayerPiece.None;
                 }
@@ -95,6 +103,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         /// <summary>
         /// Determine if the game board position is taken
+        /// This function will be removed in the future, but is currently needed for the application to run
         /// </summary>
         /// <param name="gameboardPosition"></param>
         /// <returns>true if position is open</returns>
@@ -113,6 +122,50 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Determine if column can take more pieces
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <returns>true if column has one or more open spots</returns>
+        public bool GameboardColumnAvailable(int column)
+        {
+            int counter = 0;
+
+            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
+            {
+                if (_positionState[row, column] == PlayerPiece.None) counter++;
+            }
+
+            if (counter > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Calculate the next available spot in a column
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <returns>The next available spot (row) in a column</returns>
+        public int NextAvailableRowInColumn(int column)
+        {
+            List<int> openPosition = new List<int>();
+
+            for(int row = 0; row < MAX_NUM_OF_ROWS; row++)
+            {
+                if(_positionState[row, column] == PlayerPiece.None)
+                {
+                    openPosition.Add(row);
+                }
+            }
+
+            return openPosition.Max();
         }
 
         /// <summary>
@@ -226,6 +279,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Note: gameboardPosition converted to array index by subtracting 1
             //
             _positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] = PlayerPiece;
+            //_positionState[NextAvailableRowInColumn(gameboardPosition.Column - 1), gameboardPosition.Column - 1] = PlayerPiece;
 
             //
             // Change game board state to next player
