@@ -138,14 +138,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 if (_positionState[row, column] == PlayerPiece.None) counter++;
             }
 
-            if (counter > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return counter > 0 ? true : false;
         }
 
         /// <summary>
@@ -155,17 +148,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns>The next available spot (row) in a column</returns>
         public int NextAvailableRowInColumn(int column)
         {
-            List<int> openPosition = new List<int>();
+            List<int> rows = new List<int>();
 
-            for(int row = 0; row < MAX_NUM_OF_ROWS; row++)
+            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
             {
-                if(_positionState[row, column] == PlayerPiece.None)
-                {
-                    openPosition.Add(row);
-                }
+                rows.Add(row);
             }
 
-            return openPosition.Max();
+            return rows.Where(x => _positionState[x, column] == PlayerPiece.None).Max();
         }
 
         /// <summary>
