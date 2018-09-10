@@ -433,7 +433,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     // Player response within range
                     //
-                    if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfRowsColumns)
+                    if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfColumns)
                     {
                         return tempCoordinate;
                     }
