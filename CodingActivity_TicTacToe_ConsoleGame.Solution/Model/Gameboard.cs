@@ -60,12 +60,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             get { return MAX_NUM_OF_COLUMNS; }
         }
 
-        public List<int> Rows
+        private List<int> Rows
         {
             get { return _rows; }
         }
 
-        public List<int> Columns
+        private List<int> Columns
         {
             get { return _columns; }
         }
