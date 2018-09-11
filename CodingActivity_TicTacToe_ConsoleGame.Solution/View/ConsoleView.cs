@@ -22,12 +22,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
-        private const int GAMEBOARD_VERTICAL_LOCATION = 4;
+        private const int GAMEBOARD_VERTICAL_LOCATION = 7;
 
-        private const int POSITIONPROMPT_VERTICAL_LOCATION = 12;
+        private const int POSITIONPROMPT_VERTICAL_LOCATION = 20;
         private const int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
 
-        private const int MESSAGEBOX_VERTICAL_LOCATION = 15;
+        private const int MESSAGEBOX_VERTICAL_LOCATION = 23;
 
         private const int TOP_LEFT_ROW = 3;
         private const int TOP_LEFT_COLUMN = 6;
@@ -301,13 +301,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             Console.SetCursorPosition(0, GAMEBOARD_VERTICAL_LOCATION);
 
-            Console.Write("\t\t\t        |---+---+---|\n");
+            Console.Write("\t\t\t        |---+---+---+---+---+---+---|\n");
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < _gameboard.MaxNumOfRows; i++)
             {
                 Console.Write("\t\t\t        | ");
 
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < _gameboard.MaxNumOfColumns; j++)
                 {
                     if (_gameboard.PositionState[i, j] == Gameboard.PlayerPiece.None)
                     {
@@ -320,7 +320,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                 }
 
-                Console.Write("\n\t\t\t        |---+---+---|\n");
+                Console.Write("\n\t\t\t        |---+---+---+---+---+---+---|\n");
             }
 
         }
@@ -329,7 +329,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// display prompt for a player's next move
         /// </summary>
         /// <param name="coordinateType"></param>
-        private void DisplayPositionPrompt(string coordinateType)
+        private void DisplayPositionPrompt()
         {
             //
             // Clear line by overwriting with spaces
@@ -340,7 +340,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Write new prompt
             //
             Console.SetCursorPosition(POSITIONPROMPT_HORIZONTAL_LOCATION, POSITIONPROMPT_VERTICAL_LOCATION);
-            Console.Write("Enter " + coordinateType + " number: ");
+            Console.Write("Enter column number: ");
         }
 
         /// <summary>
@@ -399,14 +399,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // Get row number from player.
             //
-            gameboardPosition.Row = PlayerCoordinateChoice("Row");
+
+            //gameboardPosition.Row = PlayerCoordinateChoice("Row");
 
             //
             // Get column number.
             //
             if (CurrentViewState != ViewState.PlayerUsedMaxAttempts)
             {
-                gameboardPosition.Column = PlayerCoordinateChoice("Column");
+                gameboardPosition.Column = PlayerCoordinateChoice();
             }
 
             return gameboardPosition;
@@ -418,7 +419,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         /// <param name="coordinateType">an integer value within proper range or -1</param>
         /// <returns></returns>
-        private int PlayerCoordinateChoice(string coordinateType)
+        private int PlayerCoordinateChoice()
         {
             int tempCoordinate = -1;
             int numOfPlayerAttempts = 1;
@@ -426,14 +427,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             while ((numOfPlayerAttempts <= maxNumOfPlayerAttempts))
             {
-                DisplayPositionPrompt(coordinateType);
+                DisplayPositionPrompt();
 
                 if (int.TryParse(Console.ReadLine(), out tempCoordinate))
                 {
                     //
                     // Player response within range
                     //
-                    if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfColumns)
+                    if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfColumns && _gameboard.GameboardColumnAvailable(tempCoordinate - 1))
                     {
                         return tempCoordinate;
                     }
@@ -442,7 +443,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     else
                     {
-                        DisplayMessageBox(coordinateType + " numbers are limited to (1,2,3)");
+                        DisplayMessageBox("Column numbers are limited to (1,2,3)");
                     }
                 }
                 //
@@ -450,7 +451,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //
                 else
                 {
-                    DisplayMessageBox(coordinateType + " numbers are limited to (1,2,3)");
+                    DisplayMessageBox("Column numbers are limited to (1,2,3)");
                 }
 
                 //
