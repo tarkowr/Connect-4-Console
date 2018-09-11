@@ -467,6 +467,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return tempCoordinate;
         }
 
+        public void DisplayOpeningMenu()
+        {
+            // view code goes here
+        }
+
+        public void DisplayMainMenu()
+        {
+            // view code goes here
+        }
+
         #endregion
     }
 }
