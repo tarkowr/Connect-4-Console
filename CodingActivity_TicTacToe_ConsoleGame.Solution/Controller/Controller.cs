@@ -213,7 +213,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //
                 // player chose an open position on the game board, add it to the game board
                 //
-                if (_gameboard.GameboardPositionAvailable(gameboardPosition))
+                if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column))
                 {
                     _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
                 }

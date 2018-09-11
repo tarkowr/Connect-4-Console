@@ -11,8 +11,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
     /// </summary>
     public struct ConsoleConfig
     {
-        public const int windowWidth = 79;
-        public const int windowHeight = 25;
+        public const int windowWidth = 100;
+        public const int windowHeight = 35;
 
         public const int windowLeft = 20;
         public const int windowTop = 20;

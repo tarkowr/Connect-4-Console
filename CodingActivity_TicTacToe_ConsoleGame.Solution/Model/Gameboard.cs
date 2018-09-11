@@ -101,28 +101,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
 
-        /// <summary>
-        /// Determine if the game board position is taken
-        /// This function will be removed in the future, but is currently needed for the application to run
-        /// </summary>
-        /// <param name="gameboardPosition"></param>
-        /// <returns>true if position is open</returns>
-        public bool GameboardPositionAvailable(GameboardPosition gameboardPosition)
-        {
-            //
-            // Confirm that the board position is empty
-            // Note: gameboardPosition converted to array index by subtracting 1
-            //
 
-            if (_positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] == PlayerPiece.None)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         /// <summary>
         /// Determine if column can take more pieces
@@ -268,8 +247,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Row and column value adjusted to match array structure
             // Note: gameboardPosition converted to array index by subtracting 1
             //
-            _positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] = PlayerPiece;
-            //_positionState[NextAvailableRowInColumn(gameboardPosition.Column - 1), gameboardPosition.Column - 1] = PlayerPiece;
+            //_positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] = PlayerPiece;
+            _positionState[NextAvailableRowInColumn(gameboardPosition.Column - 1), gameboardPosition.Column - 1] = PlayerPiece;
 
             //
             // Change game board state to next player
