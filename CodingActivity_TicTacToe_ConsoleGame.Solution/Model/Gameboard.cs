@@ -38,6 +38,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private const int MAX_NUM_OF_COLUMNS = 7;
 
+        private List<int> _rows;
+
+        private List<int> _columns;
 
         private PlayerPiece[,] _positionState;
 
@@ -55,6 +58,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public int MaxNumOfColumns
         {
             get { return MAX_NUM_OF_COLUMNS; }
+        }
+
+        private List<int> Rows
+        {
+            get { return _rows; }
+        }
+
+        private List<int> Columns
+        {
+            get { return _columns; }
         }
 
         public PlayerPiece[,] PositionState
@@ -87,37 +100,51 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void InitializeGameboard()
         {
             _currentRoundState = GameboardState.NewRound;
+            _rows = new List<int>();
+            _columns = new List<int>();
 
             //
             // Set all PlayerPiece array values to "None"
             //
             for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
             {
+                _rows.Add(row);
+
                 for (int column = 0; column < MAX_NUM_OF_COLUMNS; column++)
                 {
+                    _columns.Add(column);
                     _positionState[row, column] = PlayerPiece.None;
                 }
             }
         }
 
-
-
-
         /// <summary>
-        /// Determine if column can take more pieces
+        /// Determine if a single column has one or more open spots
         /// </summary>
         /// <param name="gameboardPosition"></param>
         /// <returns>true if column has one or more open spots</returns>
         public bool GameboardColumnAvailable(int column)
         {
-            int counter = 0;
+            return _rows.Count(row => _positionState[row, column] == PlayerPiece.None) > 0 ? true : false;
+        }
 
-            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
+        /// <summary>
+        /// Return a list of column indexes that have one or more open spots 
+        /// </summary>
+        /// <returns></returns>
+        public List<int> OpenColumns()
+        {
+            List<int> openColumns = new List<int>();
+
+            foreach(int col in _columns)
             {
-                if (_positionState[row, column] == PlayerPiece.None) counter++;
+                if (GameboardColumnAvailable(col))
+                {
+                    openColumns.Add(col);
+                }
             }
 
-            return counter > 0 ? true : false;
+            return openColumns;
         }
 
         /// <summary>
@@ -127,14 +154,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns>The next available spot (row) in a column</returns>
         public int NextAvailableRowInColumn(int column)
         {
-            List<int> rows = new List<int>();
-
-            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
-            {
-                rows.Add(row);
-            }
-
-            return rows.Where(x => _positionState[x, column] == PlayerPiece.None).Max();
+            return _rows.Where(x => _positionState[x, column] == PlayerPiece.None).Max();
         }
 
         /// <summary>
