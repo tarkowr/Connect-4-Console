@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -79,7 +80,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void PlayGame()
         {
             _gameView.DisplayWelcomeScreen();
-
+            
+            //
+            // opening menu happens
+            //
+            ManageOpeningMenuOption();
+            
             //
             // game loop happens
             //
@@ -222,6 +228,49 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 {
                     _gameView.DisplayGamePositionChoiceNotAvailableScreen();
                 }
+            }
+        }
+
+        private void ManageOpeningMenuOption()
+        {
+            switch (_gameView.DisplayOpeningMenu())
+            {
+                    case OpeningMenuOption.MainMenu:
+                        _playingGame = true;
+                        _gameView.DisplayMainMenu();
+                        break;
+                    case OpeningMenuOption.Quit:
+                        _gameView.DisplayExitPrompt();
+                        break;
+                    default:
+                        break;
+            }
+        }
+
+        private void ManageMainMenuOption()
+        {
+            switch (_gameView.DisplayMainMenu())
+            {
+                    case MainMenuOption.PlayNewRound:
+                        _playingRound = true;
+                        break;
+                    case MainMenuOption.ViewRules:
+                        // placeholder code
+                        break;
+                    case MainMenuOption.ViewCurrentGameResults:
+                        // placeholder code
+                        break;
+                    case MainMenuOption.ViewPastGameResults:
+                        // placeholder code
+                        break;
+                    case MainMenuOption.SaveGameResults:
+                        // placeholder code
+                        break;
+                    case MainMenuOption.Quit:
+                        _playingGame = false;
+                        break;
+                    default:
+                        break;
             }
         }
 

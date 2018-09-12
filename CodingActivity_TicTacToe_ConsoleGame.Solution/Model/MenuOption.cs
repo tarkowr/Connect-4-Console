@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
-    public enum MenuOption
+    public enum MainMenuOption
     {
         None,
         PlayNewRound,
+        ViewRules,
         ViewCurrentGameResults,
-        ViewPastGameResultsScores,
+        ViewPastGameResults,
         SaveGameResults,
+        Quit
+    }
+
+    public enum OpeningMenuOption
+    {
+        None,
+        MainMenu,
         Quit
     }
 }

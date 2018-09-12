@@ -213,3 +213,6 @@ ModelManifest.xml
 
 # Jetbrains' Rider config files
 .idea/
+
+# VS Code config files
+.vscode/
