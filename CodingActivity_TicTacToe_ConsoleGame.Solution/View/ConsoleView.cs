@@ -149,8 +149,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             DisplayContinuePrompt();
         }
 
-
-
         /// <summary>
         /// Inform the player that their position choice is not available
         /// </summary>
@@ -158,11 +156,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.HeaderText = "Position Choice Unavailable";
+            ConsoleUtil.HeaderText = "Column Unavailable";
             ConsoleUtil.DisplayReset();
 
-            sb.Append(" It appears that you have chosen a position that is all ready");
-            sb.Append(" taken. Please try again.");
+            sb.Append(" The column is already full. Please try another column.");
 
             DisplayMessageBox(sb.ToString());
 
@@ -350,7 +347,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns>bool where true = yes</returns>
         private bool DisplayGetYesNoPrompt(string promptMessage)
         {
-            bool yesNoChoice = true;
+            bool yesNoChoice = false;
             bool validResponse = false;
             string userResponse;
 
@@ -363,13 +360,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                 if (userResponse.ToUpper() == "YES")
                 {
-                    validResponse = true;
                     yesNoChoice = true;
+                    validResponse = true;
                 }
                 else if (userResponse.ToUpper() == "NO")
                 {
-                    validResponse = true;
                     yesNoChoice = false;
+                    validResponse = true;
                 }
                 else
                 {
@@ -433,7 +430,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 {
                     //
                     // Player response within range
-                    //
+                    // Temporary: Make sure that the column is available
                     if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfColumns && _gameboard.GameboardColumnAvailable(tempCoordinate - 1))
                     {
                         return tempCoordinate;

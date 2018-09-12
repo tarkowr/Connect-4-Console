@@ -121,16 +121,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     // Prompt user to play another round
                     //
-                    var isUserPlayingAgain = _gameView.DisplayNewRoundPrompt();
-                    if (!isUserPlayingAgain)
-                    {
-                        _playingGame = false;
-                    }
-                    if (isUserPlayingAgain)
+                    if (_gameView.DisplayNewRoundPrompt())
                     {
                         _gameboard.InitializeGameboard();
                         _gameView.InitializeView();
                         _playingRound = true;
+                    }
+                    else
+                    {
+                        _playingGame = false;
                     }
                 }
                 //
@@ -218,7 +217,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //
                 // player chose an open position on the game board, add it to the game board
                 //
-                if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column))
+                if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column - 1))
                 {
                     _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
                 }
