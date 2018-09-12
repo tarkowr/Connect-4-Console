@@ -467,16 +467,146 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return tempCoordinate;
         }
 
-        public void DisplayOpeningMenu()
+        public OpeningMenuOption DisplayOpeningMenu()
         {
+
+            int userChoice = 0;
+            int index = 1;
+            OpeningMenuOption openingMenuOption = OpeningMenuOption.None;
+
+            ConsoleUtil.HeaderText = "Welcome To Connect Four!";
+            ConsoleUtil.DisplayReset();
+            ConsoleUtil.DisplayMessage("Please Select a Following Option:");
+            //
+            // loop through enum values and build out main menu
+            //
+            foreach (OpeningMenuOption option in Enum.GetValues(typeof(OpeningMenuOption)))
+            {
+                if (option != OpeningMenuOption.None)
+                {
+                    Console.WriteLine($"\t{index}. {option}");
+                    index++;
+                }
+                else
+                {
+
+                }
+            }
+
+            Console.WriteLine();
+
+            //
+            // checks for a valid integer and gives userfeedback
+            //
+
+            while ((!int.TryParse(Console.ReadLine(), out userChoice)) | userChoice > ((Enum.GetNames(typeof(OpeningMenuOption)).Length) - 1) | userChoice <= 0)
+            {
+                if (userChoice == 0)
+                {
+                    Console.WriteLine("Please enter a valid integer!");
+                }
+                else
+                {
+                    Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(OpeningMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
+                }
+
+            }
+
+            switch (userChoice)
+            {
+                case 1:
+                    openingMenuOption = OpeningMenuOption.MainMenu;
+                    break;
+                case 2:
+                    openingMenuOption = OpeningMenuOption.Quit;
+                    break;
+                default:
+                    break;
+
+            }
+
+
+
+            return openingMenuOption;
             // view code goes here
         }
 
-        public void DisplayMainMenu()
+        public MainMenuOption DisplayMainMenu()
         {
-            // view code goes here
-        }
 
+            MainMenuOption mainMenuOption = MainMenuOption.None;
+            int index = 1;
+            int userChoice = 0;
+
+            ConsoleUtil.HeaderText = "Main Menu";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("Please Select an Option Below!");
+            Console.WriteLine();
+
+            //
+            // loop through enum values and build out main menu
+            //
+            foreach(MainMenuOption option in Enum.GetValues(typeof(MainMenuOption)))
+            {
+                if(option != MainMenuOption.None)
+                {
+                 Console.WriteLine($"\t{index}. {option}");
+                 index++;   
+                }
+                else
+                {
+                
+                }
+            }
+
+            //
+            //get user choice
+            //
+
+            while ((!int.TryParse(Console.ReadLine(), out userChoice)) | userChoice > ((Enum.GetNames(typeof(MainMenuOption)).Length) - 1) | userChoice <= 0)
+            {   
+                if(userChoice == 0)
+                {
+                Console.WriteLine("Please enter a valid integer!");
+                }
+                else
+                {
+                Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(MainMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
+                }
+
+            }
+            
+
+            switch (userChoice)
+            {
+                case 1:
+                    mainMenuOption = MainMenuOption.PlayNewRound;
+                    break;
+                case 2:
+                    mainMenuOption = MainMenuOption.ViewRules;
+                    break;
+                case 3:
+                    mainMenuOption = MainMenuOption.ViewCurrentGameResults;
+                    break;
+                case 4:
+                    mainMenuOption = MainMenuOption.ViewPastGameResults;
+                    break;
+                case 5:
+                    mainMenuOption = MainMenuOption.SaveGameResults;
+                    break;
+                case 6:
+                    mainMenuOption = MainMenuOption.Quit;
+                    break;
+                default:
+                    break;
+
+            }
+            Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
+            DisplayContinuePrompt();
+            return mainMenuOption;
+
+        }
         #endregion
     }
 }
