@@ -134,17 +134,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         public List<int> OpenColumns()
         {
-            List<int> openColumns = new List<int>();
-
-            foreach(int col in _columns)
-            {
-                if (GameboardColumnAvailable(col))
-                {
-                    openColumns.Add(col);
-                }
-            }
-
-            return openColumns;
+            return _columns.Where(col => GameboardColumnAvailable(col)).ToList();
         }
 
         /// <summary>
@@ -187,9 +177,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // All positions on board are filled and no winner
             //
-            for (int row = 0; row < 3; row++)
+            for (int row = 0; row < MAX_NUM_OF_ROWS; row++)
             {
-                for (int column = 0; column < 3; column++)
+                for (int column = 0; column < MAX_NUM_OF_COLUMNS; column++)
                 {
                     if (_positionState[row, column] == PlayerPiece.None)
                     {
