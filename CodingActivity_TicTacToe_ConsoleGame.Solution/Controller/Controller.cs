@@ -61,7 +61,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Initialize game variables
             //
             _playingGame = true;
-            _playingRound = true;
+            _playingRound = false;
             _roundNumber = 0;
             _playerONumberOfWins = 0;
             _playerXNumberOfWins = 0;
@@ -91,6 +91,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             while (_playingGame)
             {
+
+                ManageMainMenuOption();
                 //
                 // Round loop happens
                 //
@@ -242,9 +244,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                     case OpeningMenuOption.MainMenu:
                         _playingGame = true;
-                        _gameView.DisplayMainMenu();
                         break;
                     case OpeningMenuOption.Quit:
+                        _playingGame = false;
                         _gameView.DisplayExitPrompt();
                         break;
                     default:

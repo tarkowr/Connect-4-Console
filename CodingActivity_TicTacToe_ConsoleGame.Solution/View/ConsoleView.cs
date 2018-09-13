@@ -394,12 +394,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             GameboardPosition gameboardPosition = new GameboardPosition(-1, -1);
 
             //
-            // Get row number from player.
-            //
-
-            //gameboardPosition.Row = PlayerCoordinateChoice("Row");
-
-            //
             // Get column number.
             //
             if (CurrentViewState != ViewState.PlayerUsedMaxAttempts)
@@ -466,14 +460,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public OpeningMenuOption DisplayOpeningMenu()
         {
-
             int userChoice = 0;
-            int index = 1;
             OpeningMenuOption openingMenuOption = OpeningMenuOption.None;
 
             ConsoleUtil.HeaderText = "Welcome To Connect Four!";
             ConsoleUtil.DisplayReset();
             ConsoleUtil.DisplayMessage("Please Select a Following Option:");
+
             //
             // loop through enum values and build out main menu
             //
@@ -481,12 +474,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 if (option != OpeningMenuOption.None)
                 {
-                    Console.WriteLine($"\t{index}. {option}");
-                    index++;
-                }
-                else
-                {
-
+                    Console.WriteLine($"\t{(int)option}. {option}");
                 }
             }
 
@@ -506,33 +494,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 {
                     Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(OpeningMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
                 }
-
             }
 
-            switch (userChoice)
-            {
-                case 1:
-                    openingMenuOption = OpeningMenuOption.MainMenu;
-                    break;
-                case 2:
-                    openingMenuOption = OpeningMenuOption.Quit;
-                    break;
-                default:
-                    break;
-
-            }
-
-
-
+            openingMenuOption = (OpeningMenuOption)userChoice;
             return openingMenuOption;
-            // view code goes here
         }
 
         public MainMenuOption DisplayMainMenu()
         {
-
             MainMenuOption mainMenuOption = MainMenuOption.None;
-            int index = 1;
             int userChoice = 0;
 
             ConsoleUtil.HeaderText = "Main Menu";
@@ -548,12 +518,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 if(option != MainMenuOption.None)
                 {
-                 Console.WriteLine($"\t{index}. {option}");
-                 index++;   
-                }
-                else
-                {
-                
+                 Console.WriteLine($"\t{(int)option}. {option}");
                 }
             }
 
@@ -565,44 +530,19 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {   
                 if(userChoice == 0)
                 {
-                Console.WriteLine("Please enter a valid integer!");
+                    Console.WriteLine("Please enter a valid integer!");
                 }
                 else
                 {
-                Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(MainMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
+                    Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(MainMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
                 }
-
             }
-            
 
-            switch (userChoice)
-            {
-                case 1:
-                    mainMenuOption = MainMenuOption.PlayNewRound;
-                    break;
-                case 2:
-                    mainMenuOption = MainMenuOption.ViewRules;
-                    break;
-                case 3:
-                    mainMenuOption = MainMenuOption.ViewCurrentGameResults;
-                    break;
-                case 4:
-                    mainMenuOption = MainMenuOption.ViewPastGameResults;
-                    break;
-                case 5:
-                    mainMenuOption = MainMenuOption.SaveGameResults;
-                    break;
-                case 6:
-                    mainMenuOption = MainMenuOption.Quit;
-                    break;
-                default:
-                    break;
+            mainMenuOption = (MainMenuOption)userChoice;
 
-            }
             Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
             DisplayContinuePrompt();
             return mainMenuOption;
-
         }
         #endregion
     }
