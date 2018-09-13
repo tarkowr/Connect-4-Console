@@ -106,7 +106,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     _gameboard.UpdateGameboardState();
 
-                    if (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape))
+                    if ((Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape))
                     {
                         _playingRound = false;
                     }
