@@ -91,8 +91,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             while (_playingGame)
             {
-
+                //
+                // main menu happens here
+                //
                 ManageMainMenuOption();
+                
                 //
                 // Round loop happens
                 //
@@ -126,18 +129,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     _gameView.CurrentViewState != ConsoleView.ViewState.PlayerTimedOut)
                 {
                     //
-                    // Prompt user to play another round
+                    // Go back to main menu
                     //
-                    if (_gameView.DisplayNewRoundPrompt())
-                    {
-                        _gameboard.InitializeGameboard();
-                        _gameView.InitializeView();
-                        _playingRound = true;
-                    }
-                    else
-                    {
-                        _playingGame = false;
-                    }
+                    _gameboard.InitializeGameboard();
+                    _gameView.InitializeView();
+                    _playingRound = false;
                 }
                 //
                 // Major user error recorded, end game
@@ -238,6 +234,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Manage the opening menu
+        /// </summary>
         private void ManageOpeningMenuOption()
         {
             switch (_gameView.DisplayOpeningMenu())
@@ -254,6 +253,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Manage the main menu 
+        /// </summary>
         private void ManageMainMenuOption()
         {
             switch (_gameView.DisplayMainMenu())
