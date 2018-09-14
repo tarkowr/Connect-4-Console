@@ -234,6 +234,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Manage the opening menu
+        /// </summary>
         private void ManageOpeningMenuOption()
         {
             switch (_gameView.DisplayOpeningMenu())
@@ -250,6 +253,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Manage the main menu 
+        /// </summary>
         private void ManageMainMenuOption()
         {
             switch (_gameView.DisplayMainMenu())
