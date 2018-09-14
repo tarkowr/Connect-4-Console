@@ -126,18 +126,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     _gameView.CurrentViewState != ConsoleView.ViewState.PlayerTimedOut)
                 {
                     //
-                    // Prompt user to play another round
+                    // Go back to main menu
                     //
-                    if (_gameView.DisplayNewRoundPrompt())
-                    {
-                        _gameboard.InitializeGameboard();
-                        _gameView.InitializeView();
-                        _playingRound = true;
-                    }
-                    else
-                    {
-                        _playingGame = false;
-                    }
+                    _playingRound = false;
+
                 }
                 //
                 // Major user error recorded, end game
