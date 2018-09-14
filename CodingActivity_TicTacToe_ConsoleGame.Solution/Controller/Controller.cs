@@ -91,8 +91,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             while (_playingGame)
             {
-
+                //
+                // main menu happens here
+                //
                 ManageMainMenuOption();
+                
                 //
                 // Round loop happens
                 //
@@ -128,8 +131,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     // Go back to main menu
                     //
+                    _gameboard.InitializeGameboard();
+                    _gameView.InitializeView();
                     _playingRound = false;
-
                 }
                 //
                 // Major user error recorded, end game
