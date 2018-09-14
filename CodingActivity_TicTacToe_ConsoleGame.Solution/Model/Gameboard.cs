@@ -30,6 +30,18 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             CatsGame
         }
 
+        private enum PositionMovement
+        {
+            Up,
+            UpRight,
+            Right,
+            DownRight,
+            Down,
+            DownLeft,
+            Left,
+            UpLeft
+        }
+
         #endregion
 
         #region FIELDS
@@ -148,24 +160,60 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// Calculate the next available spot in a column
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <returns>The next available spot (row) in a column</returns>
+        public int LastMoveInColumn(int column)
+        {
+            return _rows.Where(x => _positionState[x, column] == PlayerPiece.X || _positionState[x, column] == PlayerPiece.O).Min();
+        }
+
+        public PlayerPiece GetPlayerPieceByGameBoardPosition (GameboardPosition gameboardPosition)
+        {
+            return _positionState[gameboardPosition.Row, gameboardPosition.Column];
+        }
+
+        public PlayerPiece GetOtherPlayerPiece(PlayerPiece piece)
+        {
+            if(piece == PlayerPiece.X)
+            {
+                return PlayerPiece.O;
+            }
+            else
+            {
+                return PlayerPiece.X;
+            }
+        }
+
+        /// <summary>
         /// Update the game board state if a player wins or a cat's game happens.
         /// </summary>
-        public void UpdateGameboardState()
+        public void UpdateGameboardState(int column)
         {
-            if (ThreeInARow(PlayerPiece.X))
+            //Get the row index of the most recent move in the column
+            int row = LastMoveInColumn(column);
+
+            //Create a gameboard position for the most recent move
+            GameboardPosition gameboardPosition = new GameboardPosition(row, column);
+
+            //Get the piece (X or O) of the most recent move
+            PlayerPiece piece = GetPlayerPieceByGameBoardPosition(gameboardPosition);
+
+            //Check for a win
+            if (FourInARow(piece, gameboardPosition))
             {
-                _currentRoundState = GameboardState.PlayerXWin;
+                if(piece == PlayerPiece.X)
+                {
+                    _currentRoundState = GameboardState.PlayerXWin;
+                }
+                else
+                {
+                    _currentRoundState = GameboardState.PlayerOWin;
+                }
             }
-            //
-            // A player O has won
-            //
-            else if (ThreeInARow(PlayerPiece.O))
-            {
-                _currentRoundState = GameboardState.PlayerOWin;
-            }
-            //
-            // All positions filled
-            //
+
+            //Check if all positions are filled
             else if (IsCatsGame())
             {
                 _currentRoundState = GameboardState.CatsGame;
@@ -195,55 +243,138 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         /// <param name="playerPieceToCheck">Player's game piece to check</param>
         /// <returns>true if a player has won</returns>
-        private bool ThreeInARow(PlayerPiece playerPieceToCheck)
+        private bool FourInARow(PlayerPiece playerPieceToCheck, GameboardPosition gameboardPosition)
         {
-            //
-            // Check rows for player win
-            //
-            for (int row = 0; row < 3; row++)
-            {
-                if (_positionState[row, 0] == playerPieceToCheck &&
-                    _positionState[row, 1] == playerPieceToCheck &&
-                    _positionState[row, 2] == playerPieceToCheck)
-                {
-                    return true;
-                }
-            }
+            GameboardPosition originalPosition = gameboardPosition;
 
-            //
-            // Check columns for player win
-            //
-            for (int column = 0; column < 3; column++)
-            {
-                if (_positionState[0, column] == playerPieceToCheck &&
-                    _positionState[1, column] == playerPieceToCheck &&
-                    _positionState[2, column] == playerPieceToCheck)
-                {
-                    return true;
-                }
-            }
+            //Check up and down
 
-            //
-            // Check diagonals for player win
-            //
-            if (
-                (_positionState[0, 0] == playerPieceToCheck &&
-                _positionState[1, 1] == playerPieceToCheck &&
-                _positionState[2, 2] == playerPieceToCheck)
-                ||
-                (_positionState[0, 2] == playerPieceToCheck &&
-                _positionState[1, 1] == playerPieceToCheck &&
-                _positionState[2, 0] == playerPieceToCheck)
-                )
-            {
-                return true;
-            }
+            //Check left and right
 
-            //
-            // No Player Has Won
-            //
+            //Check up right and down left
+
+            //Check up left and down right
 
             return false;
+        }
+
+        private bool IsWallOrEnemyPieceNext(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement movement)
+        {
+            const int top = 8;
+            const int bottom = -1;
+            const int right = 8;
+            const int left = -1;
+
+            List<int> walls = new List<int>() { top, right, bottom, left };
+
+            PlayerPiece enemyPiece = GetOtherPlayerPiece(piece);
+
+            GameboardPosition newPosition = new GameboardPosition(-1, -1);
+
+            switch (movement)
+            {
+                case PositionMovement.Up:
+                    newPosition = MovePositionUp(gameboardPosition);
+                    break;
+                case PositionMovement.UpRight:
+
+                    break;
+                case PositionMovement.Right:
+
+                    break;
+                case PositionMovement.DownRight:
+
+                    break;
+                case PositionMovement.Down:
+
+                    break;
+                case PositionMovement.DownLeft:
+
+                    break;
+                case PositionMovement.Left:
+
+                    break;
+                case PositionMovement.UpLeft:
+
+                    break;
+                default:
+                    break;
+            }
+
+            if(walls.Contains(newPosition.Row) || walls.Contains(newPosition.Column)){
+                return true;
+            }
+            else
+            {
+                if(GetPlayerPieceByGameBoardPosition(newPosition) == enemyPiece)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        private GameboardPosition MovePositionUp(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Row = gameboardPosition.Row - 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionUpRight(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column + 1;
+            gameboardPosition.Row = gameboardPosition.Row - 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionRight(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column + 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionDownRight(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column + 1;
+            gameboardPosition.Row = gameboardPosition.Row + 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionDown(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Row = gameboardPosition.Row + 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionDownLeft(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column - 1;
+            gameboardPosition.Row = gameboardPosition.Row + 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionLeft(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column - 1;
+
+            return gameboardPosition;
+        }
+
+        private GameboardPosition MovePositionUpLeft(GameboardPosition gameboardPosition)
+        {
+            gameboardPosition.Column = gameboardPosition.Column - 1;
+            gameboardPosition.Row = gameboardPosition.Row - 1;
+
+            return gameboardPosition;
         }
 
         /// <summary>

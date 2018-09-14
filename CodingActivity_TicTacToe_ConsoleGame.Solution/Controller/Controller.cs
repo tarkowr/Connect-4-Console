@@ -103,11 +103,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     ManageGameStateTasks();
 
-                    //
-                    // Evaluate and update the current game board state
-                    //
-                    _gameboard.UpdateGameboardState();
-
                     if ((Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape))
                     {
                         _playingRound = false;
@@ -227,6 +222,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column - 1))
                 {
                     _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
+
+                    //
+                    // Evaluate and update the current game board state
+                    //
+                    _gameboard.UpdateGameboardState(gameboardPosition.Column - 1);
                 }
                 //
                 // player chose a taken position on the game board
