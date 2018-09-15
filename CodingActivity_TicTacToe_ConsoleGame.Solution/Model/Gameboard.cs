@@ -141,15 +141,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Return a list of column indexes that have one or more open spots 
-        /// </summary>
-        /// <returns></returns>
-        public List<int> OpenColumns()
-        {
-            return _columns.Where(col => GameboardColumnAvailable(col)).ToList();
-        }
-
-        /// <summary>
         /// Calculate the next available spot in a column
         /// </summary>
         /// <param name="gameboardPosition"></param>
@@ -160,7 +151,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Calculate the next available spot in a column
+        /// Calculate the last move made in a column
         /// </summary>
         /// <param name="gameboardPosition"></param>
         /// <returns>The next available spot (row) in a column</returns>
@@ -169,21 +160,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return _rows.Where(x => _positionState[x, column] == PlayerPiece.X || _positionState[x, column] == PlayerPiece.O).Min();
         }
 
+        /// <summary>
+        /// Return the PlayerPiece at the gameboardPosition
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <returns></returns>
         public PlayerPiece GetPlayerPieceByGameBoardPosition (GameboardPosition gameboardPosition)
         {
             return _positionState[gameboardPosition.Row, gameboardPosition.Column];
         }
 
-        public PlayerPiece GetOtherPlayerPiece(PlayerPiece piece)
+        /// <summary>
+        /// Return a list of column indexes that have one or more open spots 
+        /// </summary>
+        /// <returns></returns>
+        public List<int> OpenColumns()
         {
-            if(piece == PlayerPiece.X)
-            {
-                return PlayerPiece.O;
-            }
-            else
-            {
-                return PlayerPiece.X;
-            }
+            return _columns.Where(col => GameboardColumnAvailable(col)).ToList();
         }
 
         /// <summary>
@@ -239,74 +232,146 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Check for any three in a row.
+        /// Check for any four in a row.
         /// </summary>
         /// <param name="playerPieceToCheck">Player's game piece to check</param>
         /// <returns>true if a player has won</returns>
         private bool FourInARow(PlayerPiece playerPieceToCheck, GameboardPosition gameboardPosition)
         {
-            GameboardPosition originalPosition = gameboardPosition;
+            //Define linear checks for a win
+            PositionMovement[] upDown = new PositionMovement[] { PositionMovement.Up, PositionMovement.Down };
+            PositionMovement[] leftRight = new PositionMovement[] { PositionMovement.Left, PositionMovement.Right };
+            PositionMovement[] UrightDleft = new PositionMovement[] { PositionMovement.UpRight, PositionMovement.DownLeft };
+            PositionMovement[] UleftDright = new PositionMovement[] { PositionMovement.UpLeft, PositionMovement.DownRight };
+
+            int counter = 0;
 
             //Check up and down
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, upDown[0], upDown[1]);
+
+            if (CheckForFourPieces(counter)) return true;
 
             //Check left and right
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, leftRight[0], leftRight[1]);
+
+            if (CheckForFourPieces(counter)) return true;
 
             //Check up right and down left
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UrightDleft[0], UrightDleft[1]);
+
+            if (CheckForFourPieces(counter)) return true;
 
             //Check up left and down right
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UleftDright[0], UleftDright[1]);
+
+            if (CheckForFourPieces(counter)) return true;
 
             return false;
         }
 
-        private bool IsWallOrEnemyPieceNext(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement movement)
+        /// <summary>
+        /// Check if the count of consecutive linear pieces is greater than or equal to 4
+        /// </summary>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        private bool CheckForFourPieces(int total)
         {
-            const int top = 8;
-            const int bottom = -1;
-            const int right = 8;
+            return total >= 4 ? true : false;
+        }
+
+        /// <summary>
+        /// Count linear consecutive pieces
+        /// </summary>
+        private int ConsecutivePieces(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement movement1, PositionMovement movement2)
+        {
+            //Max number of pieces to check in any direction from last move
+            const int piecesTocheck = 3;
+            int counter = 1;
+
+            //Check consecutive linear pieces in one direction
+            for (int i = 0; i < piecesTocheck; i++)
+            {
+                if (CheckNextPiece(piece, gameboardPosition, movement1, i + 1))
+                {
+                    counter = counter + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            //Check consecutive linear pieces in the other direction
+            for (int i = 0; i < piecesTocheck; i++)
+            {
+                if (CheckNextPiece(piece, gameboardPosition, movement2, i + 1))
+                {
+                    counter = counter + 1;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return counter;
+        }
+
+        /// <summary>
+        /// Check if the next piece in line is a valid consecutive piece
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="movement"></param>
+        /// <param name="numberOfMoves"></param>
+        /// <returns></returns>
+        private bool CheckNextPiece(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement movement, int numberOfMoves)
+        {
+            //Define constraints
+            const int top = -1;
+            const int bottom = 6;
+            const int right = 7;
             const int left = -1;
 
-            List<int> walls = new List<int>() { top, right, bottom, left };
-
-            PlayerPiece enemyPiece = GetOtherPlayerPiece(piece);
-
+            //The next position that we are checking
             GameboardPosition newPosition = new GameboardPosition(-1, -1);
 
+            //Based on the given Movement, set newPosition to the next position in line 
             switch (movement)
             {
                 case PositionMovement.Up:
-                    newPosition = MovePositionUp(gameboardPosition);
+                    newPosition = MovePositionUp(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.UpRight:
-
+                    newPosition = MovePositionUpRight(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.Right:
-
+                    newPosition = MovePositionRight(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.DownRight:
-
+                    newPosition = MovePositionDownRight(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.Down:
-
+                    newPosition = MovePositionDown(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.DownLeft:
-
+                    newPosition = MovePositionDownLeft(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.Left:
-
+                    newPosition = MovePositionLeft(gameboardPosition, numberOfMoves);
                     break;
                 case PositionMovement.UpLeft:
-
+                    newPosition = MovePositionUpLeft(gameboardPosition, numberOfMoves);
                     break;
                 default:
                     break;
             }
 
-            if(walls.Contains(newPosition.Row) || walls.Contains(newPosition.Column)){
-                return true;
-            }
-            else
-            {
-                if(GetPlayerPieceByGameBoardPosition(newPosition) == enemyPiece)
+            //Check if new position is within the borders
+            if(newPosition.Row < bottom && newPosition.Row > top && newPosition.Column < right && newPosition.Column > left){
+
+                //Check if the new position is the right piece
+                if (GetPlayerPieceByGameBoardPosition(newPosition) == piece)
                 {
                     return true;
                 }
@@ -315,64 +380,116 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     return false;
                 }
             }
+            else
+            {
+                return false;
+            }
         }
 
-        private GameboardPosition MovePositionUp(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position up one row
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionUp(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Row = gameboardPosition.Row - 1;
+            gameboardPosition.Row = gameboardPosition.Row - number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionUpRight(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position up one row, one column to the right
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionUpRight(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column + 1;
-            gameboardPosition.Row = gameboardPosition.Row - 1;
+            gameboardPosition.Column = gameboardPosition.Column + number;
+            gameboardPosition.Row = gameboardPosition.Row - number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionRight(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position one column to the right
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionRight(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column + 1;
+            gameboardPosition.Column = gameboardPosition.Column + number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionDownRight(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position down one row, one column to the right
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionDownRight(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column + 1;
-            gameboardPosition.Row = gameboardPosition.Row + 1;
+            gameboardPosition.Column = gameboardPosition.Column + number;
+            gameboardPosition.Row = gameboardPosition.Row + number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionDown(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position down one row
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionDown(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Row = gameboardPosition.Row + 1;
+            gameboardPosition.Row = gameboardPosition.Row + number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionDownLeft(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position down one row, one column to the left
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionDownLeft(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column - 1;
-            gameboardPosition.Row = gameboardPosition.Row + 1;
+            gameboardPosition.Column = gameboardPosition.Column - number;
+            gameboardPosition.Row = gameboardPosition.Row + number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionLeft(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position one column to the left
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionLeft(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column - 1;
+            gameboardPosition.Column = gameboardPosition.Column - number;
 
             return gameboardPosition;
         }
 
-        private GameboardPosition MovePositionUpLeft(GameboardPosition gameboardPosition)
+        /// <summary>
+        /// Move position up one row, one column to the left
+        /// </summary>
+        /// <param name="gameboardPosition"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        private GameboardPosition MovePositionUpLeft(GameboardPosition gameboardPosition, int number)
         {
-            gameboardPosition.Column = gameboardPosition.Column - 1;
-            gameboardPosition.Row = gameboardPosition.Row - 1;
+            gameboardPosition.Column = gameboardPosition.Column - number;
+            gameboardPosition.Row = gameboardPosition.Row - number;
 
             return gameboardPosition;
         }
@@ -388,7 +505,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Row and column value adjusted to match array structure
             // Note: gameboardPosition converted to array index by subtracting 1
             //
-            //_positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] = PlayerPiece;
             _positionState[NextAvailableRowInColumn(gameboardPosition.Column - 1), gameboardPosition.Column - 1] = PlayerPiece;
 
             //
