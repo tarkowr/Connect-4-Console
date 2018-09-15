@@ -22,10 +22,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
+
         private const int GAMEBOARD_VERTICAL_LOCATION = 7;
 
         private const int POSITIONPROMPT_VERTICAL_LOCATION = 20;
         private const int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
+
+        private const int DEFAULTPLAYERPOSITION_VERTICAL_LOCATION = 34;
+        private const int DEFAULTPLAYERCOLUMN = 1;
 
         private const int MESSAGEBOX_VERTICAL_LOCATION = 23;
 
@@ -199,7 +203,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.HeaderText = "Current Game Board";
             ConsoleUtil.DisplayReset();
 
-            DisplayGameboard();
+            int minDefaultCol = 0;
+            while (!_gameboard.GameboardColumnAvailable(minDefaultCol))
+            {
+                minDefaultCol++;
+            }
+            int defaultPos = (34 + (4 * minDefaultCol));
+            DisplayGameboard(minDefaultCol+1, defaultPos);
             DisplayGameStatus();
         }
 
@@ -291,11 +301,34 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// display the current game board
         /// </summary>
-        private void DisplayGameboard()
+        private void DisplayGameboard(int minPlayerColChoice, int playerVertLoc)
         {
             //
             // move cursor below header
             //
+
+            Console.CursorVisible = false;
+            //clear section above gameboard
+            Console.SetCursorPosition(DEFAULTPLAYERPOSITION_VERTICAL_LOCATION, 6);
+            Console.Write("\t\t\t                                       ");
+
+
+           // playerColChoice = (34 + (4 * (playerColChoice -1)));
+
+            //set the player piece to the correct column location
+            Console.SetCursorPosition(playerVertLoc, 6);
+            //draw either x or o
+            if (_gameboard.CurrentRoundState == Gameboard.GameboardState.PlayerXTurn)
+            {
+            Console.Write(Gameboard.PlayerPiece.X);
+            }
+            else
+            {
+                Console.Write(Gameboard.PlayerPiece.O);
+            }
+
+
+            //draw the rest of the gameboard.
             Console.SetCursorPosition(0, GAMEBOARD_VERTICAL_LOCATION);
 
             Console.Write("\t\t\t        |---+---+---+---+---+---+---|\n");
@@ -412,38 +445,96 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         private int PlayerCoordinateChoice()
         {
-            int tempCoordinate = -1;
+            int playerColChoice = 1;
             int numOfPlayerAttempts = 1;
             int maxNumOfPlayerAttempts = 4;
+            bool playerConfirm = false;
+            int newPlayerPieceLoc = 34;
+            
+            Console.CursorVisible = false;
 
             while ((numOfPlayerAttempts <= maxNumOfPlayerAttempts))
-            {
-                DisplayPositionPrompt();
-
-                if (int.TryParse(Console.ReadLine(), out tempCoordinate))
-                {
-                    //
-                    // Player response within range
-                    // Temporary: Make sure that the column is available
-                    if (tempCoordinate >= 1 && tempCoordinate <= _gameboard.MaxNumOfColumns && _gameboard.GameboardColumnAvailable(tempCoordinate - 1))
+            {                    
+                    List<int> availableColumns = new List<int>();
+                    for (int i = 0; i < 7; i++)
                     {
-                        return tempCoordinate;
+                        if (_gameboard.GameboardColumnAvailable(i))
+                        {
+                            availableColumns.Add(i + 1);
+                        }
+                    }
+
+                playerColChoice = availableColumns.Min();
+                //loop until player presses enter
+                while (!playerConfirm)
+                {
+
+                    //read key
+                    var input = Console.ReadKey();
+                    //generate list of all available columns
+
+                    
+                    switch (input.Key) //Switch on Key 
+                    {
+                        
+                        case ConsoleKey.LeftArrow:
+                            int testing = availableColumns.Min();
+                            do
+                            {
+                                playerColChoice -= 1;
+                                if (playerColChoice == (availableColumns.Min()-1))
+                                {
+                                    playerColChoice = availableColumns.Max();
+                                }
+                            } while (!availableColumns.Contains(playerColChoice));
+
+                            break;
+                        case ConsoleKey.RightArrow:
+                            //if player is at column 7 and goes right, set the column to 1
+                            do
+                            {
+                                playerColChoice += 1;
+                                if (playerColChoice == (availableColumns.Max() + 1))
+                                {
+                                    playerColChoice = availableColumns.Min();
+                                }
+                            } while (!availableColumns.Contains(playerColChoice));
+                            break;
+                        case ConsoleKey.Enter:
+                            if (!_gameboard.GameboardColumnAvailable(playerColChoice -1))
+                            {
+                                DisplayMessageBox($"Column {playerColChoice} is full!");
+                            }
+                            else
+                            {
+                                playerConfirm = true;
+                            }
+                            break;
+                    }
+
+                    newPlayerPieceLoc = (34 + ((playerColChoice-1)*4));
+                    //redraw new board
+                    DisplayGameboard(availableColumns.Min(), newPlayerPieceLoc);
+                    
+                    //for testing purposes
+                    Console.WriteLine("playerchoice" + playerColChoice);
+                    Console.WriteLine("new loc"+newPlayerPieceLoc);
+
+                }
+
+                
+                    if (playerColChoice >= 1 && playerColChoice <= _gameboard.MaxNumOfColumns && _gameboard.GameboardColumnAvailable(playerColChoice - 1))
+                    {
+                        return playerColChoice;
                     }
                     //
                     // Player response out of range
                     //
-                    else
+                    else 
                     {
                         DisplayMessageBox("Column numbers are limited to (1,2,3)");
                     }
-                }
-                //
-                // Player response cannot be parsed as integer
-                //
-                else
-                {
-                    DisplayMessageBox("Column numbers are limited to (1,2,3)");
-                }
+
 
                 //
                 // Increment the number of player attempts
@@ -454,8 +545,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // Player used maximum number of attempts, set view state and return
             //
-            CurrentViewState = ViewState.PlayerUsedMaxAttempts;
-            return tempCoordinate;
+            //CurrentViewState = ViewState.PlayerUsedMaxAttempts;
+            return playerColChoice;
         }
 
         public OpeningMenuOption DisplayOpeningMenu()
