@@ -196,11 +196,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     }
                     break;
                 case ConsoleView.ViewState.PlayerTimedOut:
-                    _gameView.DisplayTimedOutScreen();
+
                     _playingRound = false;
                     break;
                 case ConsoleView.ViewState.PlayerUsedMaxAttempts:
-                    _gameView.DisplayMaxAttemptsReachedScreen();
+
                     _playingRound = false;
                     break;
                 default:
