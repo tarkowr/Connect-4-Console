@@ -55,7 +55,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _gameboard = gameboard;
 
             InitializeView();
-
         }
 
         #endregion
@@ -261,25 +260,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         private void DisplayGameboard(int playerVertLoc)
         {
-           
             Console.CursorVisible = false;
             //clear section above gameboard
             Console.SetCursorPosition(DEFAULTPLAYERPOSITION_VERTICAL_LOCATION, 6);
             Console.Write("\t\t\t                                       ");
 
-
             //set the player piece to the correct column location
             Console.SetCursorPosition(playerVertLoc, 6);
+
             //draw either x or o
             if (_gameboard.CurrentRoundState == Gameboard.GameboardState.PlayerXTurn)
             {
-            Console.Write(Gameboard.PlayerPiece.X);
+                Console.Write(Gameboard.PlayerPiece.X);
             }
             else
             {
                 Console.Write(Gameboard.PlayerPiece.O);
             }
-
 
             //draw the rest of the gameboard.
             Console.SetCursorPosition(0, GAMEBOARD_VERTICAL_LOCATION);
@@ -319,6 +316,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             Console.SetCursorPosition(POSITIONPROMPT_HORIZONTAL_LOCATION, POSITIONPROMPT_VERTICAL_LOCATION);
             Console.Write(new String(' ', ConsoleConfig.windowWidth));
+            
             //
             // Write new prompt
             //
@@ -385,7 +383,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             gameboardPosition.Column = PlayerCoordinateChoice();
         
             return gameboardPosition;
-
         }
 
         /// <summary>
@@ -399,37 +396,36 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             int newPlayerPieceLoc = 34;
             bool playerConfirm = false;
 
-            
             Console.CursorVisible = false;
        
-                //generate list of available columns so I can skip over full columns
-                    List<int> availableColumns = new List<int>();
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (_gameboard.GameboardColumnAvailable(i))
-                        {
-                            availableColumns.Add(i + 1);
-                        }
-                    }
+            //generate list of available columns so I can skip over full columns
+            List<int> availableColumns = new List<int>();
 
-                //set player default choice as the first available column (farthest left)
-                playerColChoice = availableColumns.Min();
+            for (int i = 0; i < 7; i++)
+            {
+                if (_gameboard.GameboardColumnAvailable(i))
+                {
+                    availableColumns.Add(i + 1);
+                }
+            }
+
+            //set player default choice as the first available column (farthest left)
+            playerColChoice = availableColumns.Min();
 
                 //loop until player presses enter
                 while (!playerConfirm)
                 {
-
                     //read key
-                    var input = Console.ReadKey();
+                    var input = GetKey();
 
                     switch (input.Key) //Switch on Key 
                     {
-                        
                         case ConsoleKey.LeftArrow:
                             do
                             {
                                 //subract 1 from player column choice to move piece left
                                 playerColChoice -= 1;
+
                                 //check to see if the player is at the farthest left column available
                                 if (playerColChoice == (availableColumns.Min()-1))
                                 {
@@ -443,6 +439,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             {
                                 //add 1 to player column choice to move piece right
                                 playerColChoice += 1;
+
                                 //check to see if the player is at the farthest right column available
                                 if (playerColChoice == (availableColumns.Max() + 1))
                                 {
@@ -453,18 +450,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         case ConsoleKey.Enter:
                                 playerConfirm = true; 
                             break;
+                        default:
+                            break;
                     }
 
                     //calculate new coord points for game piece based on column chosen
                     newPlayerPieceLoc = (34 + ((playerColChoice-1)*4));
+
                     //redraw new board
                     DisplayGameboard(newPlayerPieceLoc);
-                    
                 }
-
-                
-                   
-            
 
             return playerColChoice;
         }
@@ -551,9 +546,58 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             mainMenuOption = (MainMenuOption)userChoice;
 
-            Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
-            DisplayContinuePrompt();
+            //Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
+            //DisplayContinuePrompt();
             return mainMenuOption;
+        }
+
+        /// <summary>
+        /// Get a key from the user
+        /// </summary>
+        /// <returns></returns>
+        public ConsoleKeyInfo GetKey()
+        {
+            ConsoleKeyInfo i = new ConsoleKeyInfo();
+            i = Console.ReadKey(true);
+            return i;
+        }
+
+        public void SelectFirstPlayer(int index, string[] playerOptions)
+        {
+            ConsoleUtil.HeaderText = "Starting Player";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("Select which player starts:");
+            Console.WriteLine();
+
+            DisplayFirstPlayerOptions(index, playerOptions);
+
+            Console.CursorVisible = false;
+        }
+
+        /// <summary>
+        /// Write out the options of a list that uses arrow keys for selection
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="options"></param>
+        /// <param name="posLeft"></param>
+        /// <param name="posRight"></param>
+        public void DisplayFirstPlayerOptions(int index, string[] options, int posLeft = TOP_LEFT_ROW, int posRight = TOP_LEFT_COLUMN)
+        {
+            for (int i = 0; i < options.Length; i++)
+            {
+                Console.SetCursorPosition(posLeft, posRight + i);
+                if (index == i)
+                {
+                    Console.ForegroundColor = ConsoleUtil.bodyHightlightForegroundColor;
+                    Console.WriteLine(">> " + options[i]);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else
+                {
+                    Console.WriteLine("   " + options[i]);
+                }
+            }
         }
         #endregion
     }
