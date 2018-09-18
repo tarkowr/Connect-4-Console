@@ -91,13 +91,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// display the Continue prompt
         /// </summary>
-        public void DisplayContinuePrompt()
+        public void DisplayContinuePrompt(string message = "Press any key to continue.")
         {
             Console.CursorVisible = false;
 
             Console.WriteLine();
 
-            ConsoleUtil.DisplayMessage("Press any key to continue.");
+            ConsoleUtil.DisplayMessage(message);
             ConsoleKeyInfo response = Console.ReadKey();
 
             Console.WriteLine();
@@ -188,16 +188,24 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.HeaderText = "Current Game Status";
             ConsoleUtil.DisplayReset();
 
-            double playerXPercentageWins = (double)playerXWins / roundsPlayed;
-            double playerOPercentageWins = (double)playerOWins / roundsPlayed;
-            double percentageOfCatsGames = (double)catsGames / roundsPlayed;
+            double playerXPercentageWins = 0;
+            double playerOPercentageWins = 0;
+            double percentageOfCatsGames = 0;
+
+            if (roundsPlayed > 0)
+            {
+                playerXPercentageWins = (double)playerXWins / roundsPlayed;
+                playerOPercentageWins = (double)playerOWins / roundsPlayed;
+                percentageOfCatsGames = (double)catsGames / roundsPlayed;
+            }
+        
 
             ConsoleUtil.DisplayMessage("Rounds Played: " + roundsPlayed);
             ConsoleUtil.DisplayMessage("Rounds for Player X: " + playerXWins + " - " + String.Format("{0:P2}", playerXPercentageWins));
             ConsoleUtil.DisplayMessage("Rounds for Player O: " + playerOWins + " - " + String.Format("{0:P2}", playerOPercentageWins));
             ConsoleUtil.DisplayMessage("Cat's Games: " + catsGames + " - " + String.Format("{0:P2}", percentageOfCatsGames));
 
-            DisplayContinuePrompt();
+            DisplayContinuePrompt("Press any key to return to the Main Menu.");
         }
 
         public bool DisplayNewRoundPrompt()

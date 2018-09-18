@@ -91,8 +91,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             while (_playingGame)
             {
-
+                //
+                // main menu happens here
+                //
                 ManageMainMenuOption();
+                
                 //
                 // Round loop happens
                 //
@@ -102,50 +105,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     // Perform the task associated with the current game and round state
                     //
                     ManageGameStateTasks();
-
-                    //
-                    // Evaluate and update the current game board state
-                    //
-                    _gameboard.UpdateGameboardState();
-
-                    if ((Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape))
-                    {
-                        _playingRound = false;
-                    }
                 }
 
                 //
-                // Round Complete: Display the results
+                // Go back to main menu
                 //
-                _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
-
-                //
-                // Confirm no major user errors
-                //
-                if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts ||
-                    _gameView.CurrentViewState != ConsoleView.ViewState.PlayerTimedOut)
-                {
-                    //
-                    // Prompt user to play another round
-                    //
-                    if (_gameView.DisplayNewRoundPrompt())
-                    {
-                        _gameboard.InitializeGameboard();
-                        _gameView.InitializeView();
-                        _playingRound = true;
-                    }
-                    else
-                    {
-                        _playingGame = false;
-                    }
-                }
-                //
-                // Major user error recorded, end game
-                //
-                else
-                {
-                    _playingGame = false;
-                }
+                _gameboard.InitializeGameboard();
+                _gameView.InitializeView();
+                _playingRound = false;
             }
 
             _gameView.DisplayExitPrompt();
@@ -178,30 +145,25 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                         case Gameboard.GameboardState.PlayerXWin:
                             _playerXNumberOfWins++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
                         case Gameboard.GameboardState.PlayerOWin:
                             _playerONumberOfWins++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
                         case Gameboard.GameboardState.CatsGame:
                             _numberOfCatsGames++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
                         default:
                             break;
                     }
-                    break;
-                case ConsoleView.ViewState.PlayerTimedOut:
-
-                    _playingRound = false;
-                    break;
-                case ConsoleView.ViewState.PlayerUsedMaxAttempts:
-
-                    _playingRound = false;
                     break;
                 default:
                     break;
@@ -219,25 +181,30 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             GameboardPosition gameboardPosition = _gameView.GetPlayerPositionChoice();
 
-            if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts)
+            //
+            // player chose an open position on the game board, add it to the game board
+            //
+            if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column - 1))
             {
+                _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
+
                 //
-                // player chose an open position on the game board, add it to the game board
+                // Evaluate and update the current game board state
                 //
-                if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column - 1))
-                {
-                    _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
-                }
-                //
-                // player chose a taken position on the game board
-                //
-                else
-                {
-                    _gameView.DisplayGamePositionChoiceNotAvailableScreen();
-                }
+                _gameboard.UpdateGameboardState(gameboardPosition.Column - 1);
+            }
+            //
+            // player chose a taken position on the game board
+            //
+            else
+            {
+                _gameView.DisplayGamePositionChoiceNotAvailableScreen();
             }
         }
 
+        /// <summary>
+        /// Manage the opening menu
+        /// </summary>
         private void ManageOpeningMenuOption()
         {
             switch (_gameView.DisplayOpeningMenu())
@@ -254,6 +221,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Manage the main menu 
+        /// </summary>
         private void ManageMainMenuOption()
         {
             switch (_gameView.DisplayMainMenu())
@@ -265,13 +235,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         // placeholder code
                         break;
                     case MainMenuOption.ViewCurrentGameResults:
-                        // placeholder code
-                        break;
-                    case MainMenuOption.ViewPastGameResults:
-                        // placeholder code
-                        break;
-                    case MainMenuOption.SaveGameResults:
-                        // placeholder code
+                        _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                         break;
                     case MainMenuOption.Quit:
                         _playingGame = false;
