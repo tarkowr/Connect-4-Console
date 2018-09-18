@@ -27,7 +27,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             PlayerOTurn,
             PlayerXWin,
             PlayerOWin,
-            CatsGame,
+            CatsGame
         }
 
         private enum PositionMovement
