@@ -14,8 +14,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public enum ViewState
         {
             Active,
-            PlayerTimedOut, // TODO Track player time on task
-            PlayerUsedMaxAttempts
         }
 
         #endregion
@@ -120,24 +118,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.ReadKey();
 
             System.Environment.Exit(0);
-        }
-
-
-        /// <summary>
-        /// Inform the player that their position choice is not available
-        /// </summary>
-        public void DisplayGamePositionChoiceNotAvailableScreen()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            ConsoleUtil.HeaderText = "Column Unavailable";
-            ConsoleUtil.DisplayReset();
-
-            sb.Append(" The column is already full. Please try another column.");
-
-            DisplayMessageBox(sb.ToString());
-
-            DisplayContinuePrompt();
         }
 
         /// <summary>
@@ -402,11 +382,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // Get column number.
             //
-            if (CurrentViewState != ViewState.PlayerUsedMaxAttempts)
-            {
-                gameboardPosition.Column = PlayerCoordinateChoice();
-            }
-
+            gameboardPosition.Column = PlayerCoordinateChoice();
+        
             return gameboardPosition;
 
         }
@@ -418,9 +395,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         private int PlayerCoordinateChoice()
         {
-
-
-
             int playerColChoice = 1;
             int newPlayerPieceLoc = 34;
             bool playerConfirm = false;
@@ -477,11 +451,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             } while (!availableColumns.Contains(playerColChoice));
                             break;
                         case ConsoleKey.Enter:
-                                playerConfirm = true;
-                            
-                            break;
-                        case ConsoleKey.Escape:
-                            DisplayExitPrompt();
+                                playerConfirm = true; 
                             break;
                     }
 
