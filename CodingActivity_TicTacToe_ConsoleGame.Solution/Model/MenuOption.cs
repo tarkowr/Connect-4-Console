@@ -12,8 +12,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         PlayNewRound,
         ViewRules,
         ViewCurrentGameResults,
-        ViewPastGameResults,
-        SaveGameResults,
         Quit
     }
 
