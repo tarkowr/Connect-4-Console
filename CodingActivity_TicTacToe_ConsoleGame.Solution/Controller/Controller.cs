@@ -193,13 +193,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //
                 _gameboard.UpdateGameboardState(gameboardPosition.Column - 1);
             }
-            //
-            // player chose a taken position on the game board
-            //
-            else
-            {
-                _gameView.DisplayGamePositionChoiceNotAvailableScreen();
-            }
         }
 
         /// <summary>
