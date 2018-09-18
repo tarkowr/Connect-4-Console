@@ -122,36 +122,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             System.Environment.Exit(0);
         }
 
-        /// <summary>
-        /// display the session timed out screen
-        /// </summary>
-        public void DisplayTimedOutScreen()
-        {
-            ConsoleUtil.HeaderText = "Session Timed Out!";
-            ConsoleUtil.DisplayReset();
-
-            DisplayMessageBox("It appears your session has timed out.");
-
-            DisplayContinuePrompt();
-        }
-
-        /// <summary>
-        /// display the maximum attempts reached screen
-        /// </summary>
-        public void DisplayMaxAttemptsReachedScreen()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            ConsoleUtil.HeaderText = "Maximum Attempts Reached!";
-            ConsoleUtil.DisplayReset();
-
-            sb.Append(" It appears that you are having difficulty entering your");
-            sb.Append(" choice. Please refer to the instructions and play again.");
-
-            DisplayMessageBox(sb.ToString());
-
-            DisplayContinuePrompt();
-        }
 
         /// <summary>
         /// Inform the player that their position choice is not available
@@ -449,8 +419,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private int PlayerCoordinateChoice()
         {
 
-            int numOfPlayerAttempts = 1;
-            int maxNumOfPlayerAttempts = 4;
+
 
             int playerColChoice = 1;
             int newPlayerPieceLoc = 34;
@@ -458,9 +427,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             
             Console.CursorVisible = false;
-
-            while ((numOfPlayerAttempts <= maxNumOfPlayerAttempts))
-            {          
+       
                 //generate list of available columns so I can skip over full columns
                     List<int> availableColumns = new List<int>();
                     for (int i = 0; i < 7; i++)
@@ -510,15 +477,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             } while (!availableColumns.Contains(playerColChoice));
                             break;
                         case ConsoleKey.Enter:
-                            //just a saftey net to make sure the player can't choose an unavailable col.... can be deleted 
-                            if (!_gameboard.GameboardColumnAvailable(playerColChoice -1))
-                            {
-                                DisplayMessageBox($"Column {playerColChoice} is full!");
-                            }
-                            else
-                            {
                                 playerConfirm = true;
-                            }
+                            
                             break;
                         case ConsoleKey.Escape:
                             DisplayExitPrompt();
@@ -533,29 +493,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 }
 
                 
-                    if (playerColChoice >= 1 && playerColChoice <= _gameboard.MaxNumOfColumns && _gameboard.GameboardColumnAvailable(playerColChoice - 1))
-                    {
-                        return playerColChoice;
-                    }
-                    //
-                    // Player response out of range
-                    //
-                    else 
-                    {
-                        DisplayMessageBox("Column numbers are limited to (1,2,3)");
-                    }
+                   
+            
 
-
-                //
-                // Increment the number of player attempts
-                //
-                numOfPlayerAttempts++;
-            }
-
-            //
-            // Player used maximum number of attempts, set view state and return
-            //
-            //CurrentViewState = ViewState.PlayerUsedMaxAttempts;
             return playerColChoice;
         }
 
