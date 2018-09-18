@@ -27,12 +27,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             PlayerOTurn,
             PlayerXWin,
             PlayerOWin,
-            CatsGame
+            CatsGame,
         }
 
         private enum PositionMovement
         {
-            Up,
+            None,
             UpRight,
             Right,
             DownRight,
@@ -239,15 +239,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private bool FourInARow(PlayerPiece playerPieceToCheck, GameboardPosition gameboardPosition)
         {
             //Define linear checks for a win
-            PositionMovement[] upDown = new PositionMovement[] { PositionMovement.Up, PositionMovement.Down };
+            PositionMovement[] down = new PositionMovement[] { PositionMovement.Down, PositionMovement.None };
             PositionMovement[] leftRight = new PositionMovement[] { PositionMovement.Left, PositionMovement.Right };
             PositionMovement[] UrightDleft = new PositionMovement[] { PositionMovement.UpRight, PositionMovement.DownLeft };
             PositionMovement[] UleftDright = new PositionMovement[] { PositionMovement.UpLeft, PositionMovement.DownRight };
 
             int counter = 0;
 
-            //Check up and down
-            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, upDown[0], upDown[1]);
+            //Check down
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, down[0], down[1]);
 
             if (CheckForFourPieces(counter)) return true;
 
@@ -289,28 +289,34 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             int counter = 1;
 
             //Check consecutive linear pieces in one direction
-            for (int i = 0; i < piecesTocheck; i++)
+            if(movement1 != PositionMovement.None)
             {
-                if (CheckNextPiece(piece, gameboardPosition, movement1, i + 1))
+                for (int i = 0; i < piecesTocheck; i++)
                 {
-                    counter = counter + 1;
-                }
-                else
-                {
-                    break;
+                    if (CheckNextPiece(piece, gameboardPosition, movement1, i + 1))
+                    {
+                        counter = counter + 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
             //Check consecutive linear pieces in the other direction
-            for (int i = 0; i < piecesTocheck; i++)
+            if(movement2 != PositionMovement.None)
             {
-                if (CheckNextPiece(piece, gameboardPosition, movement2, i + 1))
+                for (int i = 0; i < piecesTocheck; i++)
                 {
-                    counter = counter + 1;
-                }
-                else
-                {
-                    break;
+                    if (CheckNextPiece(piece, gameboardPosition, movement2, i + 1))
+                    {
+                        counter = counter + 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
@@ -339,9 +345,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //Based on the given Movement, set newPosition to the next position in line 
             switch (movement)
             {
-                case PositionMovement.Up:
-                    newPosition = MovePositionUp(gameboardPosition, numberOfMoves);
-                    break;
                 case PositionMovement.UpRight:
                     newPosition = MovePositionUpRight(gameboardPosition, numberOfMoves);
                     break;
@@ -385,20 +388,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 return false;
             }
         }
-
-        /// <summary>
-        /// Move position up one row
-        /// </summary>
-        /// <param name="gameboardPosition"></param>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        private GameboardPosition MovePositionUp(GameboardPosition gameboardPosition, int number)
-        {
-            gameboardPosition.Row = gameboardPosition.Row - number;
-
-            return gameboardPosition;
-        }
-
         /// <summary>
         /// Move position up one row, one column to the right
         /// </summary>

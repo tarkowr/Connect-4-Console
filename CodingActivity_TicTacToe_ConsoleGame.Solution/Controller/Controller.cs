@@ -113,11 +113,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 }
 
                 //
-                // Round Complete: Display the results
-                //
-                _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
-
-                //
                 // Confirm no major user errors
                 //
                 if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts ||
@@ -169,16 +164,19 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                         case Gameboard.GameboardState.PlayerXWin:
                             _playerXNumberOfWins++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
                         case Gameboard.GameboardState.PlayerOWin:
                             _playerONumberOfWins++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
                         case Gameboard.GameboardState.CatsGame:
                             _numberOfCatsGames++;
+                            _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                             _playingRound = false;
                             break;
 
@@ -267,7 +265,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         // placeholder code
                         break;
                     case MainMenuOption.ViewCurrentGameResults:
-                        // placeholder code
+                        _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
                         break;
                     case MainMenuOption.ViewPastGameResults:
                         // placeholder code
