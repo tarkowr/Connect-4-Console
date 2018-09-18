@@ -209,7 +209,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 minDefaultCol++;
             }
             int defaultPos = (34 + (4 * minDefaultCol));
-            DisplayGameboard(minDefaultCol+1, defaultPos);
+            DisplayGameboard( defaultPos);
             DisplayGameStatus();
         }
 
@@ -301,19 +301,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// display the current game board
         /// </summary>
-        private void DisplayGameboard(int minPlayerColChoice, int playerVertLoc)
+        private void DisplayGameboard(int playerVertLoc)
         {
-            //
-            // move cursor below header
-            //
-
+           
             Console.CursorVisible = false;
             //clear section above gameboard
             Console.SetCursorPosition(DEFAULTPLAYERPOSITION_VERTICAL_LOCATION, 6);
             Console.Write("\t\t\t                                       ");
 
-
-           // playerColChoice = (34 + (4 * (playerColChoice -1)));
 
             //set the player piece to the correct column location
             Console.SetCursorPosition(playerVertLoc, 6);
@@ -445,16 +440,20 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         private int PlayerCoordinateChoice()
         {
-            int playerColChoice = 1;
+
             int numOfPlayerAttempts = 1;
             int maxNumOfPlayerAttempts = 4;
-            bool playerConfirm = false;
+
+            int playerColChoice = 1;
             int newPlayerPieceLoc = 34;
+            bool playerConfirm = false;
+
             
             Console.CursorVisible = false;
 
             while ((numOfPlayerAttempts <= maxNumOfPlayerAttempts))
-            {                    
+            {          
+                //generate list of available columns so I can skip over full columns
                     List<int> availableColumns = new List<int>();
                     for (int i = 0; i < 7; i++)
                     {
@@ -464,24 +463,25 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         }
                     }
 
+                //set player default choice as the first available column (farthest left)
                 playerColChoice = availableColumns.Min();
+
                 //loop until player presses enter
                 while (!playerConfirm)
                 {
 
                     //read key
                     var input = Console.ReadKey();
-                    //generate list of all available columns
 
-                    
                     switch (input.Key) //Switch on Key 
                     {
                         
                         case ConsoleKey.LeftArrow:
-                            int testing = availableColumns.Min();
                             do
                             {
+                                //subract 1 from player column choice to move piece left
                                 playerColChoice -= 1;
+                                //check to see if the player is at the farthest left column available
                                 if (playerColChoice == (availableColumns.Min()-1))
                                 {
                                     playerColChoice = availableColumns.Max();
@@ -490,10 +490,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                             break;
                         case ConsoleKey.RightArrow:
-                            //if player is at column 7 and goes right, set the column to 1
                             do
                             {
+                                //add 1 to player column choice to move piece right
                                 playerColChoice += 1;
+                                //check to see if the player is at the farthest right column available
                                 if (playerColChoice == (availableColumns.Max() + 1))
                                 {
                                     playerColChoice = availableColumns.Min();
@@ -501,6 +502,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             } while (!availableColumns.Contains(playerColChoice));
                             break;
                         case ConsoleKey.Enter:
+                            //just a saftey net to make sure the player can't choose an unavailable col.... can be deleted 
                             if (!_gameboard.GameboardColumnAvailable(playerColChoice -1))
                             {
                                 DisplayMessageBox($"Column {playerColChoice} is full!");
@@ -510,16 +512,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                                 playerConfirm = true;
                             }
                             break;
+                        case ConsoleKey.Escape:
+                            DisplayExitPrompt();
+                            break;
                     }
 
+                    //calculate new coord points for game piece based on column chosen
                     newPlayerPieceLoc = (34 + ((playerColChoice-1)*4));
                     //redraw new board
-                    DisplayGameboard(availableColumns.Min(), newPlayerPieceLoc);
+                    DisplayGameboard(newPlayerPieceLoc);
                     
-                    //for testing purposes
-                    Console.WriteLine("playerchoice" + playerColChoice);
-                    Console.WriteLine("new loc"+newPlayerPieceLoc);
-
                 }
 
                 
