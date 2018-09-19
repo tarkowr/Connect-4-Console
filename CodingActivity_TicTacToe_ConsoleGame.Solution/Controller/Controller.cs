@@ -36,8 +36,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region PROPERTIES
 
-
-
         #endregion
 
         #region CONSTRUCTORS
@@ -126,13 +124,17 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             switch (_gameView.CurrentViewState)
             {
                 case ConsoleView.ViewState.Active:
-                    _gameView.DisplayGameArea();
+                    if(_gameboard.CurrentRoundState != Gameboard.GameboardState.NewRound)
+                    {
+                        _gameView.DisplayGameArea();
+                    }
 
                     switch (_gameboard.CurrentRoundState)
                     {
                         case Gameboard.GameboardState.NewRound:
                             _roundNumber++;
-                            _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+                            //Choose first player
+                            SelectFirstPlayer();
                             break;
 
                         case Gameboard.GameboardState.PlayerXTurn:
@@ -225,7 +227,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         _playingRound = true;
                         break;
                     case MainMenuOption.ViewRules:
-                        // placeholder code
+                        _gameView.DisplayGameRules();
                         break;
                     case MainMenuOption.ViewCurrentGameResults:
                         _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
@@ -236,6 +238,67 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     default:
                         break;
             }
+        }
+
+        /// <summary>
+        /// Players choose which player goes first in the Connect Four game
+        /// </summary>
+        /// <returns></returns>
+        private void SelectFirstPlayer()
+        {
+            var selection = new ConsoleKeyInfo();
+            int index = 0;
+            string[] playerOptions = new string[]
+            {
+                "Player " + Gameboard.PlayerPiece.X.ToString(),
+                "Player " + Gameboard.PlayerPiece.O.ToString()
+            };
+
+            _gameView.SelectFirstPlayer(index, playerOptions);
+
+            //Move selector until user presses ENTER on one option
+            while (selection.Key != ConsoleKey.Enter)
+            {
+                //Get a key from the user
+                selection = _gameView.GetKey();
+
+                //Handle the key pressed and update the current index
+                index = HandleKeyMovement(selection, index, playerOptions.Length);
+
+                //Display the list of options after the movement
+                _gameView.DisplayFirstPlayerOptions(index, playerOptions);
+            }
+
+            if(index == 0)
+            {
+                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+            }
+            else
+            {
+                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerOTurn;
+            }
+        }
+
+        /// <summary>
+        /// Handler for when Player Uses Up and Down Keys
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public int HandleKeyMovement(ConsoleKeyInfo i, int index, int lengthOfOptions)
+        {
+            if (i.Key == ConsoleKey.DownArrow)
+            {
+                index++;
+                if (index > lengthOfOptions - 1) index = 0;
+            }
+            else if (i.Key == ConsoleKey.UpArrow)
+            {
+                index--;
+                if (index < 0) index = lengthOfOptions - 1;
+            }
+
+            return index;
         }
 
         #endregion

@@ -171,15 +171,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Return a list of column indexes that have one or more open spots 
-        /// </summary>
-        /// <returns></returns>
-        public List<int> OpenColumns()
-        {
-            return _columns.Where(col => GameboardColumnAvailable(col)).ToList();
-        }
-
-        /// <summary>
         /// Update the game board state if a player wins or a cat's game happens.
         /// </summary>
         public void UpdateGameboardState(int column)

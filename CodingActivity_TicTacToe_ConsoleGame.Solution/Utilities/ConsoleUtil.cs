@@ -30,6 +30,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private static ConsoleColor _bodyBackgroundColor = ConsoleColor.Black;
         private static ConsoleColor _bodyForegroundColor = ConsoleColor.White;
+        public const ConsoleColor bodyHightlightForegroundColor = ConsoleColor.Yellow;
 
         private static string _windowTitle = " - set window title - ";
 
