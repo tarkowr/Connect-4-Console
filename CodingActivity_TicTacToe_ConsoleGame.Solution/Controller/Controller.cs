@@ -227,7 +227,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         _playingRound = true;
                         break;
                     case MainMenuOption.ViewRules:
-                        // placeholder code
+                        _gameView.DisplayGameRules();
                         break;
                     case MainMenuOption.ViewCurrentGameResults:
                         _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);

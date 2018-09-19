@@ -13,7 +13,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public enum ViewState
         {
-            Active,
+            Active
         }
 
         #endregion
@@ -135,14 +135,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             sb.Clear();
             sb.AppendFormat("This application is designed to allow two players to play ");
-            sb.AppendFormat("a game of tic-tac-toe. The rules are the standard rules for the ");
+            sb.AppendFormat("a game of ConnectFour. The rules are the standard rules for the ");
             sb.AppendFormat("game with each player taking a turn.");
             ConsoleUtil.DisplayMessage(sb.ToString());
             Console.WriteLine();
-
-            sb.Clear();
-            sb.AppendFormat("Your first task will be to set up your account details.");
-            ConsoleUtil.DisplayMessage(sb.ToString());
 
             DisplayContinuePrompt();
         }
@@ -472,6 +468,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.HeaderText = "Welcome To Connect Four!";
             ConsoleUtil.DisplayReset();
             ConsoleUtil.DisplayMessage("Please Select a Following Option:");
+            Console.WriteLine();
 
             //
             // loop through enum values and build out main menu
@@ -549,6 +546,44 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
             //DisplayContinuePrompt();
             return mainMenuOption;
+        }
+
+        public void DisplayGameRules()
+        {
+            ConsoleUtil.HeaderText = "Game Rules";
+            ConsoleUtil.DisplayReset();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendFormat("Game Objective:");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            Console.WriteLine();
+
+            sb.Clear();
+
+            sb.AppendFormat("Be the first player to connect four of your game pieces in a consecutive line.");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            Console.WriteLine();
+            Console.WriteLine();
+
+            sb.Clear();
+
+            sb.AppendFormat("Game Rules:");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            Console.WriteLine();
+
+            sb.Clear();
+
+            sb.AppendFormat("Players alternate dropping one of their game piece into a column on the game board." +
+                " The game ends when a player connects four of their pieces horizontally, vertically, or diagonally." +
+                " If all of the positions on the game board are filled, the game ends and it is counted as a tie." +
+                " Once a column is full of pieces, that column will no longer be available to place pieces in." +
+                " The game is played on a 6x7 game board.");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt("Press any key to return to the Main Menu.");
         }
 
         /// <summary>
