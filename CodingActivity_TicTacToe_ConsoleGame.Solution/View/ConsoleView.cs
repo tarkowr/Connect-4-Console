@@ -362,31 +362,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Get a player's position choice within the correct range of the array
-        /// Note: The ConsoleView is allowed access to the GameboardPosition struct.
-        /// </summary>
-        /// <returns>GameboardPosition</returns>
-        public GameboardPosition GetPlayerPositionChoice()
-        {
-            //
-            // Initialize gameboardPosition with -1 values
-            //
-            GameboardPosition gameboardPosition = new GameboardPosition(-1, -1);
-
-            //
-            // Get column number.
-            //
-            gameboardPosition.Column = PlayerCoordinateChoice();
-        
-            return gameboardPosition;
-        }
-
-        /// <summary>
         /// Validate the player's coordinate response for integer and range
         /// </summary>
         /// <param name="coordinateType">an integer value within proper range or -1</param>
         /// <returns></returns>
-        private int PlayerCoordinateChoice()
+        public int PlayerCoordinateChoice()
         {
             int playerColChoice = 1;
             int newPlayerPieceLoc = 34;
@@ -444,8 +424,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             } while (!availableColumns.Contains(playerColChoice));
                             break;
                         case ConsoleKey.Enter:
-                                playerConfirm = true; 
+                            playerConfirm = true; 
                             break;
+                        case ConsoleKey.Escape:
+                            playerColChoice = _gameboard.EXIT_ROUND_CODE;
+                            return playerColChoice;
                         default:
                             break;
                     }
@@ -561,7 +544,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             sb.Clear();
 
-            sb.AppendFormat("Be the first player to connect four of your game pieces in a consecutive line.");
+            sb.AppendFormat("Be the first player to connect four of your game pieces horizontally, vertically, or diagonally.");
             ConsoleUtil.DisplayMessage(sb.ToString());
             Console.WriteLine();
             Console.WriteLine();
@@ -574,12 +557,50 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             sb.Clear();
 
-            sb.AppendFormat("Players alternate dropping one of their game piece into a column on the game board." +
-                " The game ends when a player connects four of their pieces horizontally, vertically, or diagonally." +
-                " If all of the positions on the game board are filled, the game ends and it is counted as a tie." +
-                " Once a column is full of pieces, that column will no longer be available to place pieces in." +
-                " The game is played on a 6x7 game board.");
+            sb.AppendFormat("- Players alternate dropping one of their game pieces into a column on the game board");
             ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("- The game ends when four of the same pieces are connected horizontally, vertically, or diagonally");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("- If all of the positions on the game board are filled, the round is counted as a draw");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("- If the game is ended early, the round is counted as a draw");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("- If the game is ended while selecting the starting player, the round isn't counted");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            Console.WriteLine();
+            Console.WriteLine();
+
+            sb.Clear();
+
+            sb.AppendFormat("Keyboard Usage:");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            Console.WriteLine();
+
+            sb.Clear();
+
+            sb.AppendFormat("Up & Down arrow keys :       Selecting the First Player to Start");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("Left & Right arrow keys :    Selecting a column on the Gameboard to drop a piece");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("Enter :                      Submitting your selection");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("Escape :                     End the ConnectFour round to return to the Main Menu");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
 
             Console.WriteLine();
 
