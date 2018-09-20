@@ -460,44 +460,83 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         public OpeningMenuOption DisplayOpeningMenu()
         {
-            int userChoice = 0;
+
             OpeningMenuOption openingMenuOption = OpeningMenuOption.None;
+
+
+            int userOptionChoice = 1;
+            bool playerConfirm = false;
+            List<int> availableOptions = new List<int>();
+
+            Console.CursorVisible = false;
+            //loop until player presses enter
+            while (!playerConfirm)
+            {
+                //draw header
 
             ConsoleUtil.HeaderText = "Welcome To Connect Four!";
             ConsoleUtil.DisplayReset();
             ConsoleUtil.DisplayMessage("Please Select a Following Option:");
             Console.WriteLine();
 
-            //
-            // loop through enum values and build out main menu
-            //
-            foreach (OpeningMenuOption option in Enum.GetValues(typeof(OpeningMenuOption)))
-            {
-                if (option != OpeningMenuOption.None)
+                //loop through enum options 
+                foreach (OpeningMenuOption option in Enum.GetValues(typeof(OpeningMenuOption)))
                 {
-                    Console.WriteLine($"\t{(int)option}. {option}");
+                    //add option int value to list
+                    availableOptions.Add((int)option);
+
+                    //ignore menu option none
+                    if (option != OpeningMenuOption.None)
+                    {
+                        //draw single line based on if it is the current selected option
+                        if (userOptionChoice == ((int)option))
+                        {
+
+                            Console.Write("\t");
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine($">> {(int)option}. {option}");
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+                        }
+                        else
+                        {
+
+                            Console.WriteLine($"\t{(int)option}. {option}");
+                        }
+
+                    }
                 }
+                //read key
+                var input = GetKey();
+
+                switch (input.Key) //Switch on Key 
+                {
+                    case ConsoleKey.UpArrow:
+                        userOptionChoice -= 1;
+                        //check to see if the userOptionChoice is at the top
+                        if (userOptionChoice == (availableOptions.Min()))
+                        {
+                            userOptionChoice = availableOptions.Max();
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        userOptionChoice += 1;
+                        //check to see if the userOptionChoice is at the bottom
+                        if (userOptionChoice == (availableOptions.Max() + 1))
+                        {
+                            userOptionChoice = availableOptions.Min() + 1;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        playerConfirm = true;
+                        openingMenuOption = (OpeningMenuOption)userOptionChoice;
+                        break;
+                }
+
+
+
             }
-
-            Console.WriteLine();
-
-            //
-            // checks for a valid integer and gives userfeedback
-            //
-
-            while ((!int.TryParse(Console.ReadLine(), out userChoice)) | userChoice > ((Enum.GetNames(typeof(OpeningMenuOption)).Length) - 1) | userChoice <= 0)
-            {
-                if (userChoice == 0)
-                {
-                    Console.WriteLine("Please enter a valid integer!");
-                }
-                else
-                {
-                    Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(OpeningMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
-                }
-            }
-
-            openingMenuOption = (OpeningMenuOption)userChoice;
+           
             return openingMenuOption;
         }
 
@@ -508,45 +547,79 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public MainMenuOption DisplayMainMenu()
         {
             MainMenuOption mainMenuOption = MainMenuOption.None;
-            int userChoice = 0;
+            int userOptionChoice = 1;   
+            bool playerConfirm = false;
+            List<int> availableOptions = new List<int>();
 
-            ConsoleUtil.HeaderText = "Main Menu";
-            ConsoleUtil.DisplayReset();
-
-            ConsoleUtil.DisplayMessage("Please Select an Option Below!");
-            Console.WriteLine();
-
-            //
-            // loop through enum values and build out main menu
-            //
-            foreach(MainMenuOption option in Enum.GetValues(typeof(MainMenuOption)))
+            Console.CursorVisible = false;
+            //loop until player presses enter
+            while (!playerConfirm)
             {
-                if(option != MainMenuOption.None)
+                //draw header
+                ConsoleUtil.HeaderText = "Main Menu";
+                ConsoleUtil.DisplayReset();
+
+                ConsoleUtil.DisplayMessage("Please Select an Option Below!");
+                Console.WriteLine();
+
+                //loop through enum options 
+                foreach (MainMenuOption option in Enum.GetValues(typeof(MainMenuOption)))
                 {
-                 Console.WriteLine($"\t{(int)option}. {option}");
+                    //add option int value to list
+                    availableOptions.Add((int)option);
+
+                    //ignore menu option none
+                    if (option != MainMenuOption.None)
+                    {
+                    //draw single line based on if it is the current selected option
+                        if (userOptionChoice == ((int)option))
+                        {
+
+                            Console.Write("\t");
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.WriteLine($">> {(int)option}. {option}");
+                            Console.BackgroundColor = ConsoleColor.Black;
+
+                        }
+                        else
+                        {
+
+                            Console.WriteLine($"\t{(int)option}. {option}");
+                        }
+
+                    }
                 }
+                //read key
+                var input = GetKey();
+
+                switch (input.Key) //Switch on Key 
+                {
+                    case ConsoleKey.UpArrow:
+                        userOptionChoice -= 1;
+                        //check to see if the userOptionChoice is at the top
+                        if (userOptionChoice == (availableOptions.Min()))
+                            {
+                                userOptionChoice = availableOptions.Max();
+                            }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        userOptionChoice += 1;
+                        //check to see if the userOptionChoice is at the bottom
+                            if (userOptionChoice == (availableOptions.Max()+1))
+                            {
+                                userOptionChoice = availableOptions.Min()+1;
+                            }
+                        break;
+                    case ConsoleKey.Enter:
+                        playerConfirm = true;
+                        mainMenuOption = (MainMenuOption)userOptionChoice;
+                        break;
+                }
+
+                
+
             }
 
-            //
-            //get user choice
-            //
-
-            while ((!int.TryParse(Console.ReadLine(), out userChoice)) | userChoice > ((Enum.GetNames(typeof(MainMenuOption)).Length) - 1) | userChoice <= 0)
-            {   
-                if(userChoice == 0)
-                {
-                    Console.WriteLine("Please enter a valid integer!");
-                }
-                else
-                {
-                    Console.WriteLine($"{userChoice} is not within the range of 1 and {(Enum.GetNames(typeof(MainMenuOption)).Length) - 1}!\nPlease enter a valid integer!");
-                }
-            }
-
-            mainMenuOption = (MainMenuOption)userChoice;
-
-            //Console.WriteLine($"You have selected to {mainMenuOption.ToString()}");
-            //DisplayContinuePrompt();
             return mainMenuOption;
         }
 
@@ -667,9 +740,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 Console.SetCursorPosition(posLeft, posRight + i);
                 if (index == i)
                 {
-                    Console.ForegroundColor = ConsoleUtil.bodyHightlightForegroundColor;
+                    Console.BackgroundColor = ConsoleUtil.bodyHightlightForegroundColor;
                     Console.WriteLine(">> " + options[i]);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
                 {
