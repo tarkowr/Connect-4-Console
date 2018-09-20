@@ -58,6 +58,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private GameboardState _currentRoundState;
 
+        private const int _exit_round_code = 201;
+
         #endregion
 
         #region PROPERTIES
@@ -92,6 +94,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             get { return _currentRoundState; }
             set { _currentRoundState = value; }
+        }
+
+        public int EXIT_ROUND_CODE
+        {
+            get { return _exit_round_code; }
         }
         #endregion
 
@@ -479,13 +486,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         /// <param name="gameboardPosition"></param>
         /// <param name="PlayerPiece"></param>
-        public void SetPlayerPiece(GameboardPosition gameboardPosition, PlayerPiece PlayerPiece)
+        public void SetPlayerPiece(int column, PlayerPiece PlayerPiece)
         {
             //
             // Row and column value adjusted to match array structure
             // Note: gameboardPosition converted to array index by subtracting 1
             //
-            _positionState[NextAvailableRowInColumn(gameboardPosition.Column - 1), gameboardPosition.Column - 1] = PlayerPiece;
+            _positionState[NextAvailableRowInColumn(column - 1), column - 1] = PlayerPiece;
 
             //
             // Change game board state to next player

@@ -181,19 +181,27 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <param name="currentPlayerPiece">identify as either the X or O player</param>
         private void ManagePlayerTurn(Gameboard.PlayerPiece currentPlayerPiece)
         {
-            GameboardPosition gameboardPosition = _gameView.GetPlayerPositionChoice();
+            int column = _gameView.PlayerCoordinateChoice();
+
+            if(column == _gameboard.EXIT_ROUND_CODE)
+            {
+                _numberOfCatsGames++;
+                _playingRound = false;
+                _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
+                return;
+            }
 
             //
             // player chose an open position on the game board, add it to the game board
             //
-            if (_gameboard.GameboardColumnAvailable(gameboardPosition.Column - 1))
+            if (_gameboard.GameboardColumnAvailable(column - 1))
             {
-                _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
+                _gameboard.SetPlayerPiece(column, currentPlayerPiece);
 
                 //
                 // Evaluate and update the current game board state
                 //
-                _gameboard.UpdateGameboardState(gameboardPosition.Column - 1);
+                _gameboard.UpdateGameboardState(column - 1);
             }
         }
 
@@ -265,6 +273,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //Handle the key pressed and update the current index
                 index = HandleKeyMovement(selection, index, playerOptions.Length);
 
+                //Check for Exit Code
+                if(index == _gameboard.EXIT_ROUND_CODE)
+                {
+                    _roundNumber--;
+                    _playingRound = false;
+                    return;
+                }
+
                 //Display the list of options after the movement
                 _gameView.DisplayFirstPlayerOptions(index, playerOptions);
             }
@@ -296,6 +312,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 index--;
                 if (index < 0) index = lengthOfOptions - 1;
+            }
+            else if(i.Key == ConsoleKey.Escape)
+            {
+                index = _gameboard.EXIT_ROUND_CODE;
             }
 
             return index;
