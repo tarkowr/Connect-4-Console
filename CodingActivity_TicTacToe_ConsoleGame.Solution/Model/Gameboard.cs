@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
-
-//using TicTacToe.ConsoleApp.Model;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -97,6 +92,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region CONSTRUCTORS
 
+        /// <summary>
+        /// Instantiates a gameboard
+        /// </summary>
         public Gameboard()
         {
             _positionState = new PlayerPiece[MAX_NUM_OF_ROWS, MAX_NUM_OF_COLUMNS];
@@ -204,6 +202,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
         
+        /// <summary>
+        /// Determines if the current game is a tie
+        /// </summary>
+        /// <returns></returns>
         public bool IsCatsGame()
         {
             //

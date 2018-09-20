@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -49,7 +47,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         #endregion
 
         #region CONSTRUCTORS
-
+        
+        /// <summary>
+        /// Instantiates the game view
+        /// </summary>
+        /// <param name="gameboard"></param>
         public ConsoleView(Gameboard gameboard)
         {
             _gameboard = gameboard;
@@ -143,6 +145,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             DisplayContinuePrompt();
         }
 
+        /// <summary>
+        /// Display the game area and game board
+        /// </summary>
         public void DisplayGameArea()
         {
             ConsoleUtil.HeaderText = "Current Game Board";
@@ -157,7 +162,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             DisplayGameboard( defaultPos);
             DisplayGameStatus();
         }
-
+        
+        /// <summary>
+        /// Display the current game status, including who won and ties
+        /// </summary>
+        /// <param name="roundsPlayed"></param>
+        /// <param name="playerXWins"></param>
+        /// <param name="playerOWins"></param>
+        /// <param name="catsGames"></param>
         public void DisplayCurrentGameStatus(int roundsPlayed, int playerXWins, int playerOWins, int catsGames)
         {
             ConsoleUtil.HeaderText = "Current Game Status";
@@ -183,14 +195,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             DisplayContinuePrompt("Press any key to return to the Main Menu.");
         }
 
-        public bool DisplayNewRoundPrompt()
-        {
-            ConsoleUtil.HeaderText = "Continue or Quit";
-            ConsoleUtil.DisplayReset();
-
-            return DisplayGetYesNoPrompt("Would you like to play another round?");
-        }
-
+        /// <summary>
+        /// Display the status of the current game
+        /// </summary>
         public void DisplayGameStatus()
         {
             StringBuilder sb = new StringBuilder();
@@ -234,6 +241,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
+        /// <summary>
+        /// Display a message box in the game area
+        /// </summary>
+        /// <param name="message"></param>
         public void DisplayMessageBox(string message)
         {
             string leftMargin = new String(' ', ConsoleConfig.displayHorizontalMargin);
@@ -460,6 +471,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return playerColChoice;
         }
 
+        /// <summary>
+        /// Display the opening menu
+        /// </summary>
+        /// <returns></returns>
         public OpeningMenuOption DisplayOpeningMenu()
         {
             int userChoice = 0;
@@ -503,6 +518,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return openingMenuOption;
         }
 
+        /// <summary>
+        /// Display the main menu
+        /// </summary>
+        /// <returns></returns>
         public MainMenuOption DisplayMainMenu()
         {
             MainMenuOption mainMenuOption = MainMenuOption.None;
@@ -548,6 +567,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return mainMenuOption;
         }
 
+        /// <summary>
+        /// Display the game rules
+        /// </summary>
         public void DisplayGameRules()
         {
             ConsoleUtil.HeaderText = "Game Rules";
