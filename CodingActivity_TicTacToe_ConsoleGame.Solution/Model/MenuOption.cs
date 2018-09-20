@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
+    /// <summary>
+    /// Enum of the main menu
+    /// </summary>
     public enum MainMenuOption
     {
         None,
@@ -15,6 +14,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         Quit
     }
 
+    /// <summary>
+    /// Enum for the opening menu
+    /// </summary>
     public enum OpeningMenuOption
     {
         None,

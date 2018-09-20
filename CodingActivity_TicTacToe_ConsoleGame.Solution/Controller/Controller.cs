@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -39,7 +34,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         #endregion
 
         #region CONSTRUCTORS
-
+        
+        /// <summary>
+        /// Instantiates the game controller
+        /// </summary>
         public GameController()
         {
             InitializeGame();
