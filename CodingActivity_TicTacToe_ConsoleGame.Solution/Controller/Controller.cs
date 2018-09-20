@@ -27,6 +27,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private static Gameboard _gameboard = new Gameboard();
         private static ConsoleView _gameView = new ConsoleView(_gameboard);
 
+        //
+        // Initialize Reusable sound player
+        //
+        public static System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer();
+
+        //
+        // Initialize Game Sounds
+        //
+
+
         #endregion
 
         #region PROPERTIES
@@ -68,7 +78,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             _gameboard.InitializeGameboard();
         }
-
 
         /// <summary>
         /// Game Loop
