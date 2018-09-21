@@ -494,13 +494,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                             Console.Write("\t");
                             Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine($">> {(int)option}. {option}");
+                            Console.WriteLine($"{(int)option}. {option}");
                             Console.BackgroundColor = ConsoleColor.Black;
-
                         }
                         else
                         {
-
                             Console.WriteLine($"\t{(int)option}. {option}");
                         }
 
@@ -532,9 +530,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         openingMenuOption = (OpeningMenuOption)userOptionChoice;
                         break;
                 }
-
-
-
             }
            
             return openingMenuOption;
@@ -577,7 +572,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                             Console.Write("\t");
                             Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine($">> {(int)option}. {option}");
+                            Console.WriteLine($"{(int)option}. {option}");
                             Console.BackgroundColor = ConsoleColor.Black;
 
                         }
@@ -615,9 +610,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         mainMenuOption = (MainMenuOption)userOptionChoice;
                         break;
                 }
-
-                
-
             }
 
             return mainMenuOption;
@@ -740,13 +732,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 Console.SetCursorPosition(posLeft, posRight + i);
                 if (index == i)
                 {
+                    Console.Write("\t");
                     Console.BackgroundColor = ConsoleUtil.bodyHightlightForegroundColor;
-                    Console.WriteLine(">> " + options[i]);
+                    Console.WriteLine(i+1 + ". " + options[i]);
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 else
                 {
-                    Console.WriteLine("   " + options[i]);
+                    Console.Write("\t");
+                    Console.WriteLine(i+1 + ". " + options[i]);
                 }
             }
         }
