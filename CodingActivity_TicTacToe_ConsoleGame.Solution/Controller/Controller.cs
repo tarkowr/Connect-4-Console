@@ -35,7 +35,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         //
         // Initialize Game Sounds
         //
-
+        Sound applause = new Sound("Media//applaud.wav", soundPlayer);
 
         #endregion
 
@@ -208,7 +208,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 //
                 // Evaluate and update the current game board state
                 //
-                _gameboard.UpdateGameboardState(column - 1);
+                _gameboard.UpdateGameboardState(column - 1, applause);
             }
         }
 
