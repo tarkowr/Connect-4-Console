@@ -178,7 +178,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// Update the game board state if a player wins or a cat's game happens.
         /// </summary>
-        public void UpdateGameboardState(int column)
+        public void UpdateGameboardState(int column, Sound applause)
         {
             //Get the row index of the most recent move in the column
             int row = LastMoveInColumn(column);
@@ -192,6 +192,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //Check for a win
             if (FourInARow(piece, gameboardPosition))
             {
+                applause.playSound();
+
                 if(piece == PlayerPiece.X)
                 {
                     _currentRoundState = GameboardState.PlayerXWin;

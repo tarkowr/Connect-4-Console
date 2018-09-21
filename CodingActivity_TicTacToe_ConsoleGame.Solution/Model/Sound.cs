@@ -25,7 +25,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Constructor -- Initialize the Sound Player
+        /// Sound Constructor
         /// </summary>
         /// <param name="audioFile"></param>
         public Sound(string audioFile, System.Media.SoundPlayer soundPlayer)
@@ -36,6 +36,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             InitializeSound();
         }
 
+        /// <summary>
+        /// Attach the audio file to the sound player and load it
+        /// </summary>
         private void InitializeSound()
         {
             _soundPlayer.SoundLocation = _audioFile;
@@ -46,7 +49,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// Play a sound
         /// </summary>
         /// <param name="audioPath"></param>
-        public void playSound(bool loop)
+        public void playSound(bool loop = false)
         {
             try
             {
@@ -57,17 +60,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     _playing = true;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error playing Sound File: {_audioFile} \n");
-                Console.WriteLine(ex.Message);
+
             }
         }
 
         /// <summary>
         /// Stop a Sound and Dispose of it
         /// </summary>
-        public void stopSound(bool dispose)
+        public void stopSound(bool dispose = false)
         {
             _soundPlayer.Stop();
             _playing = false;
