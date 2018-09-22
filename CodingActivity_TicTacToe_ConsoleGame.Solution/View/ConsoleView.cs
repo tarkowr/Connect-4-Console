@@ -248,7 +248,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void DisplayMessageBox(string message)
         {
             string leftMargin = new String(' ', ConsoleConfig.displayHorizontalMargin);
-            string topBottom = new String('*', ConsoleConfig.windowWidth - 2 * ConsoleConfig.displayHorizontalMargin);
+            string topBottom = new String('-', ConsoleConfig.windowWidth - 2 * ConsoleConfig.displayHorizontalMargin);
 
             StringBuilder sb = new StringBuilder();
 
@@ -278,38 +278,75 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //draw either x or o
             if (_gameboard.CurrentRoundState == Gameboard.GameboardState.PlayerXTurn)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(Gameboard.PlayerPiece.X);
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(Gameboard.PlayerPiece.O);
             }
 
+
+            char ulCorner = '\u2554';
+            char llCorner = '\u255A';
+            char urCorner = '\u2557';
+            char lrCorner = '\u255D';
+            char v = '\u2551';
+            char h = '\u2550';
+            char cross = '\u256c';
+            char hc = '\u2569';
+            char hcd = '\u2566';
+            char vt = '\u2560';
+            char vtl = '\u2563';
+
+
             //draw the rest of the gameboard.
             Console.SetCursorPosition(0, GAMEBOARD_VERTICAL_LOCATION);
-
-            Console.Write("\t\t\t        |---+---+---+---+---+---+---|\n");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write($"\t\t\t        {ulCorner}{h}{h}{h}{hcd}{h}{h}{h}{hcd}{h}{h}{h}{hcd}{h}{h}{h}{hcd}{h}{h}{h}{hcd}{h}{h}{h}{hcd}{h}{h}{h}{urCorner}\n");
 
             for (int i = 0; i < _gameboard.MaxNumOfRows; i++)
             {
-                Console.Write("\t\t\t        | ");
+                Console.Write($"\t\t\t        {v} ");
 
                 for (int j = 0; j < _gameboard.MaxNumOfColumns; j++)
                 {
                     if (_gameboard.PositionState[i, j] == Gameboard.PlayerPiece.None)
                     {
-                        Console.Write(" " + " | ");
+                        Console.Write(" " + $" {v} ");
                     }
                     else
                     {
-                        Console.Write(_gameboard.PositionState[i, j] + " | ");
+                        if (_gameboard.PositionState[i, j] == Gameboard.PlayerPiece.X)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(_gameboard.PositionState[i, j]);
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write($" {v} ");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(_gameboard.PositionState[i, j]);
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write($" {v} ");
+                        }
+
                     }
 
                 }
+                if (i == _gameboard.MaxNumOfRows-1)
+                {
+                    Console.Write($"\n\t\t\t        {llCorner}{h}{h}{h}{hc}{h}{h}{h}{hc}{h}{h}{h}{hc}{h}{h}{h}{hc}{h}{h}{h}{hc}{h}{h}{h}{hc}{h}{h}{h}{lrCorner}\n");
+                }
+                else
+                {
+                Console.Write($"\n\t\t\t        {vt}{h}{h}{h}{cross}{h}{h}{h}{cross}{h}{h}{h}{cross}{h}{h}{h}{cross}{h}{h}{h}{cross}{h}{h}{h}{cross}{h}{h}{h}{vtl}\n");
+                }
 
-                Console.Write("\n\t\t\t        |---+---+---+---+---+---+---|\n");
             }
-
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>
