@@ -240,15 +240,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     break;
             }
         }
-
         /// <summary>
         /// Display a message box in the game area
         /// </summary>
         /// <param name="message"></param>
         public void DisplayMessageBox(string message)
         {
+            char h = '\u2550';
             string leftMargin = new String(' ', ConsoleConfig.displayHorizontalMargin);
-            string topBottom = new String('-', ConsoleConfig.windowWidth - 2 * ConsoleConfig.displayHorizontalMargin);
+            string topBottom = new String(h, ConsoleConfig.windowWidth - 2 * ConsoleConfig.displayHorizontalMargin);
+
 
             StringBuilder sb = new StringBuilder();
 
