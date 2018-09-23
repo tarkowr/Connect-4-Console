@@ -478,6 +478,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         case ConsoleKey.Escape:
                             playerColChoice = _gameboard.EXIT_ROUND_CODE;
                             return playerColChoice;
+                        case ConsoleKey.H:
+                            playerColChoice = _gameboard.HELP_CODE;
+                            return playerColChoice;
                         default:
                             break;
                     }
@@ -711,25 +714,29 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             sb.Clear();
 
-            sb.AppendFormat("Up & Down arrow keys :       Selecting the First Player to Start");
+            sb.AppendFormat("Up & Down arrow keys:       Selecting the First Player to Start");
             ConsoleUtil.DisplayMessage(sb.ToString());
             sb.Clear();
 
-            sb.AppendFormat("Left & Right arrow keys :    Selecting a column on the Gameboard to drop a piece");
+            sb.AppendFormat("Left & Right arrow keys:    Selecting a column on the Gameboard to drop a piece");
             ConsoleUtil.DisplayMessage(sb.ToString());
             sb.Clear();
 
-            sb.AppendFormat("Enter :                      Submitting your selection");
+            sb.AppendFormat("Enter Key:                  Submitting your selection");
             ConsoleUtil.DisplayMessage(sb.ToString());
             sb.Clear();
 
-            sb.AppendFormat("Escape :                     End the ConnectFour round to return to the Main Menu");
+            sb.AppendFormat("Escape Key:                 End the ConnectFour round to return to the Main Menu");
+            ConsoleUtil.DisplayMessage(sb.ToString());
+            sb.Clear();
+
+            sb.AppendFormat("H Key:                      Display the Game Rules Menu");
             ConsoleUtil.DisplayMessage(sb.ToString());
             sb.Clear();
 
             Console.WriteLine();
 
-            DisplayContinuePrompt("Press any key to return to the Main Menu.");
+            DisplayContinuePrompt("Press any key to exit this Menu.");
         }
 
         /// <summary>

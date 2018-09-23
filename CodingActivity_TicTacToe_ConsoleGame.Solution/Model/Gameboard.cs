@@ -55,6 +55,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private const int _exit_round_code = 201;
 
+        private const int _help_code = 301;
+
         #endregion
 
         #region PROPERTIES
@@ -94,6 +96,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public int EXIT_ROUND_CODE
         {
             get { return _exit_round_code; }
+        }
+
+        public int HELP_CODE
+        {
+            get { return _help_code;  }
         }
         #endregion
 

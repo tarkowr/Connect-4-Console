@@ -190,7 +190,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             int column = _gameView.PlayerCoordinateChoice();
 
-            if(column == _gameboard.EXIT_ROUND_CODE)
+            while(column == _gameboard.HELP_CODE)
+            {
+                _gameView.DisplayGameRules();
+                _gameView.DisplayGameArea();
+                column = _gameView.PlayerCoordinateChoice();
+            }
+
+            if (column == _gameboard.EXIT_ROUND_CODE)
             {
                 _numberOfCatsGames++;
                 _playingRound = false;
@@ -288,8 +295,21 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     return;
                 }
 
+                //Check for Help Code
+                else if(index == _gameboard.HELP_CODE)
+                {
+                    _gameView.DisplayGameRules();
+                    index = 0;
+                    _gameView.SelectFirstPlayer(index, playerOptions);
+                    continue;
+                }
+
                 //Display the list of options after the movement
-                _gameView.DisplayFirstPlayerOptions(index, playerOptions);
+                else
+                {
+                    _gameView.DisplayFirstPlayerOptions(index, playerOptions);
+                }
+
             }
 
             if(index == 0)
@@ -323,6 +343,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             else if(i.Key == ConsoleKey.Escape)
             {
                 index = _gameboard.EXIT_ROUND_CODE;
+            }
+            else if(i.Key == ConsoleKey.H)
+            {
+                index = _gameboard.HELP_CODE;
             }
 
             return index;
