@@ -248,7 +248,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private bool FourInARow(PlayerPiece playerPieceToCheck, GameboardPosition gameboardPosition)
         {
             //Define linear checks for a win
-            PositionMovement[] down = new PositionMovement[] { PositionMovement.Down, PositionMovement.None };
+            PositionMovement[] down = new PositionMovement[] { PositionMovement.Down };
             PositionMovement[] leftRight = new PositionMovement[] { PositionMovement.Left, PositionMovement.Right };
             PositionMovement[] UrightDleft = new PositionMovement[] { PositionMovement.UpRight, PositionMovement.DownLeft };
             PositionMovement[] UleftDright = new PositionMovement[] { PositionMovement.UpLeft, PositionMovement.DownRight };
@@ -256,22 +256,22 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             int counter = 0;
 
             //Check down
-            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, down[0], down[1]);
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, down);
 
             if (CheckForFourPieces(counter)) return true;
 
             //Check left and right
-            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, leftRight[0], leftRight[1]);
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, leftRight);
 
             if (CheckForFourPieces(counter)) return true;
 
             //Check up right and down left
-            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UrightDleft[0], UrightDleft[1]);
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UrightDleft);
 
             if (CheckForFourPieces(counter)) return true;
 
             //Check up left and down right
-            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UleftDright[0], UleftDright[1]);
+            counter = ConsecutivePieces(playerPieceToCheck, gameboardPosition, UleftDright);
 
             if (CheckForFourPieces(counter)) return true;
 
@@ -291,40 +291,27 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// Count linear consecutive pieces
         /// </summary>
-        private int ConsecutivePieces(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement movement1, PositionMovement movement2)
+        private int ConsecutivePieces(PlayerPiece piece, GameboardPosition gameboardPosition, PositionMovement[] movements)
         {
             //Max number of pieces to check in any direction from last move
             const int piecesTocheck = 3;
             int counter = 1;
 
-            //Check consecutive linear pieces in one direction
-            if(movement1 != PositionMovement.None)
+            //Check consecutive linear pieces in each direction
+            for (int j = 0; j < movements.Length; j++)
             {
-                for (int i = 0; i < piecesTocheck; i++)
+                if (movements[j] != PositionMovement.None)
                 {
-                    if (CheckNextPiece(piece, gameboardPosition, movement1, i + 1))
+                    for (int i = 0; i < piecesTocheck; i++)
                     {
-                        counter = counter + 1;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-
-            //Check consecutive linear pieces in the other direction
-            if(movement2 != PositionMovement.None)
-            {
-                for (int i = 0; i < piecesTocheck; i++)
-                {
-                    if (CheckNextPiece(piece, gameboardPosition, movement2, i + 1))
-                    {
-                        counter = counter + 1;
-                    }
-                    else
-                    {
-                        break;
+                        if (CheckNextPiece(piece, gameboardPosition, movements[j], i + 1))
+                        {
+                            counter = counter + 1;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
             }
