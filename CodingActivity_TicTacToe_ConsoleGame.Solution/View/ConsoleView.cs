@@ -156,7 +156,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             int minDefaultCol = 0;
             while (!_gameboard.GameboardColumnAvailable(minDefaultCol))
             {
-                minDefaultCol++;
+                if(minDefaultCol < 6)
+                {
+                    minDefaultCol++;
+                }
+                else
+                {
+                    break;
+                }
             }
             int defaultPos = (34 + (4 * minDefaultCol));
             DisplayGameboard( defaultPos);
@@ -282,12 +289,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Write(Gameboard.PlayerPiece.X);
             }
-            else
+            else if (_gameboard.CurrentRoundState == Gameboard.GameboardState.PlayerOTurn)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(Gameboard.PlayerPiece.O);
             }
-
 
             char ulCorner = '\u2554';
             char llCorner = '\u255A';
@@ -501,9 +507,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <returns></returns>
         public OpeningMenuOption DisplayOpeningMenu()
         {
-
             OpeningMenuOption openingMenuOption = OpeningMenuOption.None;
-
 
             int userOptionChoice = 1;
             bool playerConfirm = false;
